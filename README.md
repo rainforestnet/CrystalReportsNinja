@@ -9,19 +9,18 @@ Since it is a console (command-line) app, it can be invoked by Task Scheduler, b
 ## Get Started
 Locate the folder of CrystalReportsNinja.exe and run CrystalReportsNinja -? 
 
--F Crystal Reports filename to be loaded (i.e. "C:\Report Source\Report1.rpt") 
--O Crystal Reports Output filename (i.e. "C:\Reports Output\Report1.pdf" ) [Optional]
--E Intended file format to be exported.(i.e. pdf, doc, xls .. and etc). 
-If you wish to print Crystal Reports to a printer, simply "-E print" instead of specifying file format.
+* -F Crystal Reports filename to be loaded (i.e. "C:\Report Source\Report1.rpt") 
+* -O Crystal Reports Output filename (i.e. "C:\Reports Output\Report1.pdf" ) [Optional]
+* -E Intended file format to be exported.(i.e. pdf, doc, xls .. and etc). If you wish to print Crystal Reports to a printer, simply "-E print" instead of specifying file format.
 
--N Printer Name. If printer name is not specified, it looks for default printer in the computer. If network printer, -N \\computer01\printer1
--C Number of copy to be printed (any integer value i.e. 1,2,3..)
--S Server Name for server where data resides. Only one server per Crystal Reports is allowed.
--D Database Name. 
--U Data source / server login username. Do not specify username and password for Integrated Security connection.
--P Data source / server login password. Do not specify username and password for Integrated Security connection.
--a Pass Crystal Reports file parameter set on run-time
--l Create a log file into CrystalReportsNinja.exe directory
+* -N Printer Name. If printer name is not specified, it looks for default printer in the computer. If network printer, -N \\computer01\printer1
+* -C Number of copy to be printed (any integer value i.e. 1,2,3..)
+* -S Server Name for server where data resides. Only one server per Crystal Reports is allowed.
+* -D Database Name. 
+* -U Data source / server login username. Do not specify username and password for Integrated Security connection.
+* -P Data source / server login password. Do not specify username and password for Integrated Security connection.
+* -a Pass Crystal Reports file parameter set on run-time
+* -l Create a log file into CrystalReportsNinja.exe directory
 
 ## Passing in Parameters of Crystal Reports
 We can have as many Parameters as we want in one Crystal Reports file. 
