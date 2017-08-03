@@ -27,7 +27,6 @@ namespace CrystalReportsNinja
             _reportDoc = new ReportDocument();
             _logfilename = logfilename;
             _logger = new LogWriter(_logfilename);
-            _logger.Write("instantiated");
         }
 
         /// <summary>
@@ -46,6 +45,7 @@ namespace CrystalReportsNinja
 
             _reportDoc.Load(_sourceFilename, OpenReportMethod.OpenReportByDefault);
             _logger.Write(string.Format("Report loaded successfully"));
+            Console.WriteLine("Report loaded successfully");
         }
 
         /// <summary>
@@ -137,43 +137,26 @@ namespace CrystalReportsNinja
                 foreach (Table table in _reportDoc.Database.Tables)
                 {
                     if (server != null)
-                    {
                         logonInfo.ConnectionInfo.ServerName = server;
-                        _logger.Write(string.Format("Logon to Server = {0}", server));
-                    }
 
                     if (database != null)
-                    {
                         logonInfo.ConnectionInfo.DatabaseName = database;
-                        _logger.Write(string.Format("Logon to Database = {0}", database));
-                    }
 
                     if (username == null && password == null)
-                    {
                         logonInfo.ConnectionInfo.IntegratedSecurity = true;
-                        _logger.Write(string.Format("Integrated Security = true"));
-                    }
                     else
                     {
                         if (username != null && username.Length > 0)
-                        {
                             logonInfo.ConnectionInfo.UserID = username;
-                            _logger.Write(string.Format("Logon with user id = {0}", username));
-                        }
 
                         if (password == null) //to support blank password
-                        {
                             logonInfo.ConnectionInfo.Password = "";
-                            _logger.Write(string.Format("Logon with blank password"));
-                        }
                         else
-                        {
                             logonInfo.ConnectionInfo.Password = password;
-                            _logger.Write(string.Format("Logon with password = {0}", password));
-                        }
                     }
                     table.ApplyLogOnInfo(logonInfo);
                 }
+                Console.WriteLine("Database Login done");
             }
         }
 
@@ -276,6 +259,7 @@ namespace CrystalReportsNinja
                 _reportDoc.Export();
                 _logger.Write(string.Format("Report exported to : {0}", _outputFilename));
             }
+            Console.WriteLine("Completed");
         }
 
         /// <summary>
@@ -297,8 +281,10 @@ namespace CrystalReportsNinja
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                _logger.Write(ex.Message);
+                _logger.Write(string.Format("Exception: {0}", ex.Message));
+                _logger.Write(string.Format("Inner Exception: {0}", ex.InnerException));
+
+                throw ex;
             }
             finally
             {

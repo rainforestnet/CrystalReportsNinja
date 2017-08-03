@@ -88,43 +88,5 @@ namespace CrystalReportsNinja
             }
             return singleValue;
         }
-
-        public static void AddParameter(ref ParameterValues pValues, DiscreteOrRangeKind DoR, string inputString, string pName)
-        {
-            ParameterValue paraValue;
-            if (DoR == DiscreteOrRangeKind.DiscreteValue || (DoR == DiscreteOrRangeKind.DiscreteAndRangeValue && inputString.IndexOf("(") == -1))
-            {
-                paraValue = new ParameterDiscreteValue();
-                ((ParameterDiscreteValue)paraValue).Value = inputString;
-                Console.WriteLine("Discrete Parameter : {0} = {1}", pName, ((ParameterDiscreteValue)paraValue).Value);
-
-                pValues.Add(paraValue);
-                paraValue = null;
-            }
-            else if (DoR == DiscreteOrRangeKind.RangeValue || (DoR == DiscreteOrRangeKind.DiscreteAndRangeValue && inputString.IndexOf("(") != -1))
-            {
-                paraValue = new ParameterRangeValue();
-                ((ParameterRangeValue)paraValue).StartValue = GetStartValue(inputString);
-                ((ParameterRangeValue)paraValue).EndValue = GetEndValue(inputString);
-                Console.WriteLine("Range Parameter : {0} = {1} to {2} ", pName, ((ParameterRangeValue)paraValue).StartValue, ((ParameterRangeValue)paraValue).EndValue);
-
-                pValues.Add(paraValue);
-                paraValue = null;
-            }
-        }
-
-        public static string ConvertStringArrayToString(string[] array)
-        {
-            //
-            // Concatenate all the elements into a StringBuilder.
-            //
-            StringBuilder builder = new StringBuilder();
-            foreach (string value in array)
-            {
-                builder.Append(value);
-                builder.Append(' ');
-            }
-            return builder.ToString();
-        }
     }
 }
