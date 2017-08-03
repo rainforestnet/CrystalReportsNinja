@@ -5,6 +5,13 @@ Crystal Reports Ninja is an open source Windows Console program runs on .NET Fra
 It loads external Crystal Report file (.rpt) and export into various file formats such as xls, pdf as well as print to printer.
 
 Since it is a console (command-line) app, it can be invoked by Task Scheduler, batch file (.bat), command line file (.cmd), as well as Web API or Web Applications.
+## Directory structure
+* - CrystalReportsNinja (Source Code)
+* - Deployment
+	- CRforVS_redist_install_32bit_13_0_20.zip (runtime needed for 32-bit Windows machine)
+	- CRforVS_redist_install_64bit_13_0_20.zip (runtime needed for 64-bit Windows machine)
+* - Executable
+	- CrystalReportsNinja.exe  (Compiled by Visual Studio 2017 for .NET Framework 4.5)
 
 ## Get Started
 Locate the folder of CrystalReportsNinja.exe and run CrystalReportsNinja -? 
