@@ -234,7 +234,6 @@ namespace CrystalReportsNinja
                 };
                 _logger.Write(string.Format("Discrete Parameter : {0} = {1}", paraName, ((ParameterDiscreteValue)paraValue).Value));
                 return paraValue;
-                //paraValues.Add(paraValue);
             }
             else if (isRangeType || (isDiscreateAndRangeType && paraTextIsRange))
             {
@@ -246,10 +245,8 @@ namespace CrystalReportsNinja
                 };
                 _logger.Write(string.Format("Range Parameter : {0} = {1} to {2} ", paraName, ((ParameterRangeValue)paraValue).StartValue, ((ParameterRangeValue)paraValue).EndValue));
                 return paraValue;
-                //paraValues.Add(paraValue);
             }
             return null;
-            //return paraValues;
         }
 
         private void ApplyReportOutput()
