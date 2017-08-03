@@ -13,7 +13,7 @@ namespace CrystalReportsNinja
                 argContainer.ReadArguments(args);
 
                 if (argContainer.GetHelp)
-                    Helper.DisplayMessage(2);
+                    Helper.ShowHelpMessage();
                 else
                 {
                     string _logFilename = string.Empty;
