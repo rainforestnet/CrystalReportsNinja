@@ -31,7 +31,7 @@ namespace CrystalReportsNinja
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(string.Format("Exception: {0}. Inner Exception: {1}",ex.Message, ex.InnerException));
             }
         }
     }

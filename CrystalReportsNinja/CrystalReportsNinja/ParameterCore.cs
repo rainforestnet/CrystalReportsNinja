@@ -52,20 +52,20 @@ namespace CrystalReportsNinja
                 {
                     if (ParameterDef.EnableAllowMultipleValue && _userParams[j].ParameterValue.IndexOf("|") != -1)
                     {
-                        // For multiple value parameter
+                        // multiple value parameter
                         List<string> values = new List<string>();
                         values = Helper.SplitIntoSingleValue(_userParams[j].ParameterValue); //split multiple value into single value regardless discrete or range
 
                         for (int k = 0; k < values.Count; k++)
                         {
-                            ParameterValue paramValue = GetParamValue(ParameterDef.DiscreteOrRangeKind, values[k], ParameterDef.Name);
+                            ParameterValue paramValue = GetSingleParamValue(ParameterDef.DiscreteOrRangeKind, values[k], ParameterDef.Name);
                             paramValues.Add(paramValue);
                         }
                     }
                     else
                     {
-                        // For simple single value parameter
-                        ParameterValue paramValue = GetParamValue(ParameterDef.DiscreteOrRangeKind, _userParams[j].ParameterValue, ParameterDef.Name);
+                        // simple single value parameter
+                        ParameterValue paramValue = GetSingleParamValue(ParameterDef.DiscreteOrRangeKind, _userParams[j].ParameterValue, ParameterDef.Name);
                         paramValues.Add(paramValue);
                     }
 
@@ -90,7 +90,7 @@ namespace CrystalReportsNinja
         /// -a "Client:(Ace Soft Inc,Best Computer Inc)|(Xtreme Bike Inc,Zebra Design Inc)"
         /// </remarks>
         /// <returns></returns>
-        private ParameterValue GetParamValue(DiscreteOrRangeKind paraType, string paraInputText, string paraName)
+        private ParameterValue GetSingleParamValue(DiscreteOrRangeKind paraType, string paraInputText, string paraName)
         {
             ParameterValues paraValues = new ParameterValues();
             bool isDiscreateType = paraType == DiscreteOrRangeKind.DiscreteValue ? true : false;
