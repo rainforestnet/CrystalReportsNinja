@@ -5,91 +5,34 @@ using System.Collections.Generic;
 
 namespace CrystalReportsNinja
 {
-    internal class UserParameter
-    {
-        public string ParameterName { get; set; }
-        public string ParameterValue { get; set; }
-    }
-
     public class ReportProcessor
     {
         private string _sourceFilename;
         private string _outputFilename;
         private string _outputFormat;
         private bool _printToPrinter;
+        private string _logfilename;
 
         private ReportDocument _reportDoc;
-        private List<UserParameter> _userParams;
         private LogWriter _logger;
 
         public ArgumentContainer ReportArguments { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="logfilename"></param>
         public ReportProcessor(string logfilename)
         {
             _reportDoc = new ReportDocument();
-            _userParams = new List<UserParameter>();
-
-            _logger = new LogWriter(logfilename);
+            _logfilename = logfilename;
+            _logger = new LogWriter(_logfilename);
             _logger.Write("instantiated");
         }
 
-        private void ProcessRawParameters()
-        {
-            foreach (string input in ReportArguments.ParameterCollection)
-            {
-                _userParams.Add(new UserParameter
-                {
-                    ParameterName = input.Substring(0, input.IndexOf(":")).Trim(),
-                    ParameterValue = (input.Substring(input.IndexOf(":") + 1, input.Length - (input.IndexOf(":") + 1))).Trim(),
-                });
-            }
-        }
-
         /// <summary>
-        /// A report can contains more than One parameters, hence
-        /// we loop through all parameters that user has input and match
-        /// it with parameter definition of Crystal Reports file.
+        /// Load external Crystal Report file into Report Document
         /// </summary>
-        private void ApplyingParameters()
-        {
-            if (_reportDoc.ParameterFields.Count > 0)
-            {
-                ParameterFieldDefinitions paramDefs = _reportDoc.DataDefinition.ParameterFields;
-                ParameterValues paramValues = new ParameterValues();
-                ParameterValue paramValue;
-
-                for (int i = 0; i < paramDefs.Count; i++)
-                {
-                    for (int j = 0; j < _userParams.Count; j++)
-                    {
-                        if (paramDefs[i].Name == _userParams[j].ParameterName)
-                        {
-                            if (paramDefs[i].EnableAllowMultipleValue && _userParams[j].ParameterValue.IndexOf("|") != -1) 
-                            {
-                                // For multiple value parameter
-                                List<string> values = new List<string>();
-                                values = Helper.SplitIntoSingleValue(_userParams[j].ParameterValue); //split multiple value into single value regardless discrete or range
-
-                                for (int k = 0; k < values.Count; k++)
-                                {
-                                    paramValue = GetParamValue(paramDefs[i].DiscreteOrRangeKind, values[k], paramDefs[i].Name);
-                                    paramValues.Add(paramValue);
-                                }
-                            }
-                            else 
-                            {
-                                // For simple single value parameter
-                                paramValue = GetParamValue(paramDefs[i].DiscreteOrRangeKind, _userParams[j].ParameterValue, paramDefs[i].Name);
-                                paramValues.Add(paramValue);
-                            }
-                            paramDefs[i].ApplyCurrentValues(paramValues);
-                        }
-                    }
-                }
-            }
-        }
-
-        // Load external Crystal Report file into Report Document
         private void LoadReport()
         {
             _sourceFilename = ReportArguments.ReportPath.Trim();
@@ -105,7 +48,35 @@ namespace CrystalReportsNinja
             _logger.Write(string.Format("Report loaded successfully"));
         }
 
-        private void SetReportOutput()
+        /// <summary>
+        /// Match User input parameter values with Report parameters
+        /// </summary>
+        private void ProcessParameters()
+        {
+            var paramCount = _reportDoc.ParameterFields.Count;
+            if (paramCount > 0)
+            {
+                ParameterCore paraCore = new ParameterCore(_logfilename, ReportArguments.ParameterCollection);
+                paraCore.ProcessRawParameters();
+                var paramDefs = _reportDoc.DataDefinition.ParameterFields;
+                for (int i = 0; i < paramDefs.Count; i++)
+                {
+                    ParameterValues values = paraCore.GetParameterValues(paramDefs[i]);
+                    paramDefs[i].ApplyCurrentValues(values);
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// Validate configurations related to program output.
+        /// </summary>
+        /// <remarks>
+        /// Program output can be TWO forms
+        /// 1. Export as a file
+        /// 2. Print to printer
+        /// </remarks>
+        private void ValidateOutputConfigurations()
         {
             _outputFilename = ReportArguments.OutputPath;
             _outputFormat = ReportArguments.OutputFormat;
@@ -148,7 +119,10 @@ namespace CrystalReportsNinja
             }
         }
 
-        private void ApplyDBLogin()
+        /// <summary>
+        /// Perform Login to database tables
+        /// </summary>
+        private void PerformDBLogin()
         {
             bool toRefresh = ReportArguments.Refresh;
 
@@ -204,51 +178,8 @@ namespace CrystalReportsNinja
         }
 
         /// <summary>
-        /// Extract value from a raw parameter string.
-        /// "paraInputText" must be just a single value and not a multiple value parameters
+        /// Set export file type or printer to Report Document object.
         /// </summary>
-        /// <param name="paraType"></param>
-        /// <param name="paraInputText"></param>
-        /// <param name="paraName"></param>
-        /// <remarks>
-        /// Complex parameter input can be as such, 
-        /// pipe "|" is used to split multiple values, comma "," is used to split Start and End value of a range.
-        /// 
-        /// -a "date:(01-01-2001,28-02-2001)|(02-01-2002,31-10-2002)|(02-08-2002,31-12-2002)" 
-        /// -a "Client:(Ace Soft Inc,Best Computer Inc)|(Xtreme Bike Inc,Zebra Design Inc)"
-        /// </remarks>
-        /// <returns></returns>
-        private ParameterValue GetParamValue(DiscreteOrRangeKind paraType, string paraInputText, string paraName)
-        {
-            ParameterValues paraValues = new ParameterValues();
-            bool isDiscreateType = paraType == DiscreteOrRangeKind.DiscreteValue ? true : false;
-            bool isDiscreateAndRangeType = paraType == DiscreteOrRangeKind.DiscreteAndRangeValue ? true : false;
-            bool isRangeType = paraType == DiscreteOrRangeKind.RangeValue ? true : false;
-            bool paraTextIsRange = paraInputText.IndexOf("(") != -1 ? true : false;
-
-            if (isDiscreateType || (isDiscreateAndRangeType && !paraTextIsRange))
-            {
-                var paraValue = new ParameterDiscreteValue()
-                {
-                    Value = paraInputText
-                };
-                _logger.Write(string.Format("Discrete Parameter : {0} = {1}", paraName, ((ParameterDiscreteValue)paraValue).Value));
-                return paraValue;
-            }
-            else if (isRangeType || (isDiscreateAndRangeType && paraTextIsRange))
-            {
-                // sample of range parameter (01-01-2001,28-02-2001)
-                var paraValue = new ParameterRangeValue()
-                {
-                    StartValue = Helper.GetStartValue(paraInputText),
-                    EndValue = Helper.GetEndValue(paraInputText)
-                };
-                _logger.Write(string.Format("Range Parameter : {0} = {1} to {2} ", paraName, ((ParameterRangeValue)paraValue).StartValue, ((ParameterRangeValue)paraValue).EndValue));
-                return paraValue;
-            }
-            return null;
-        }
-
         private void ApplyReportOutput()
         {
             if (_printToPrinter)
@@ -311,7 +242,10 @@ namespace CrystalReportsNinja
             }
         }
 
-        private void DoRefresh()
+        /// <summary>
+        /// Refresh Crystal Report if no input of parameters
+        /// </summary>
+        private void PerformRefresh()
         {
             bool toRefresh = ReportArguments.Refresh;
             bool noParameter = (_reportDoc.ParameterFields.Count == 0) ? true : false;
@@ -320,7 +254,10 @@ namespace CrystalReportsNinja
                 _reportDoc.Refresh();
         }
 
-        private void DoOutput()
+        /// <summary>
+        /// Print or Export Crystal Report
+        /// </summary>
+        private void PerformOutput()
         {
             if (_printToPrinter)
             {
@@ -341,21 +278,22 @@ namespace CrystalReportsNinja
             }
         }
 
-        // Run Report
+        /// <summary>
+        /// Run the Crystal Reports Exporting or Printing process.
+        /// </summary>
         public void Run()
         {
             try
             {
                 LoadReport();
-                SetReportOutput();
-                ProcessRawParameters();
+                ValidateOutputConfigurations();
 
-                ApplyDBLogin();
+                PerformDBLogin();
                 ApplyReportOutput();
-                ApplyingParameters();
+                ProcessParameters();
 
-                DoRefresh();
-                DoOutput();
+                PerformRefresh();
+                PerformOutput();
             }
             catch (Exception ex)
             {

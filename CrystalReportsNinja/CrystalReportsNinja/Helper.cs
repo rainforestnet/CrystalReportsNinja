@@ -1,10 +1,7 @@
 ﻿using CrystalDecisions.Shared;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CrystalReportsNinja
 {
@@ -22,13 +19,13 @@ namespace CrystalReportsNinja
             }
             else if (mode == 1)
             {
-                Console.WriteLine("Type \"crexport -?\" for help");
+                Console.WriteLine("Type \"CrystalReportsNinja -?\" for help");
             }
             else if (mode == 2)
             {
-                Console.WriteLine("\nCrystal Reports Exporter Command Line Utility. Version {0}", v.ToString());
-                Console.WriteLine("Copyright(c) 2011 Rainforest Software Solution http://www.rainforestnet.com");
-                Console.WriteLine("crexport Arguments Listing");
+                Console.WriteLine("\nCrystal Reports Ninja. Version {0}", v.ToString());
+                Console.WriteLine("Copyright(c) 2017 Rainforest Software Solution http://www.rainforestnet.com");
+                Console.WriteLine("CrystalReportsNinja Arguments Listing");
                 Console.WriteLine("---------------------------------------------------");
                 Console.WriteLine("-U database login username");
                 Console.WriteLine("-P database login password");
@@ -40,9 +37,9 @@ namespace CrystalReportsNinja
                 Console.WriteLine("-a Parameter value");
                 Console.WriteLine("-N Printer Name (Network printer : \\\\PrintServer\\Printername or Local printer : printername)");
                 Console.WriteLine("-C Number of copy to be printed");
-                Console.WriteLine("-l To write a log file. filename crexport-yyyyMMddHHmmss.log");
+                Console.WriteLine("-l To write a log file. filename ninja-yyyyMMddHHmmss.log");
                 Console.WriteLine("---------------------------------------------------");
-                Console.WriteLine("\nExample: C:\\> crexport -U user1 -P mypass -S Server01 -D \"ExtremeDB\" -F c:\\test.rpt -O d:\\test.pdf -a \"Supplier Name:Active Outdoors\" -a \"Date Range:(12-01-2001,12-04-2002)\"");
+                Console.WriteLine("\nExample: C:\\> CrystalReportsNinja -U user1 -P mypass -S Server01 -D \"ExtremeDB\" -F c:\\test.rpt -O d:\\test.pdf -a \"Supplier Name:Active Outdoors\" -a \"Date Range:(12-01-2001,12-04-2002)\"");
                 Console.WriteLine("Learn more in http://www.rainforestnet.com/crystal-reports-exporter/");
             }
         }
@@ -101,9 +98,6 @@ namespace CrystalReportsNinja
                 ((ParameterDiscreteValue)paraValue).Value = inputString;
                 Console.WriteLine("Discrete Parameter : {0} = {1}", pName, ((ParameterDiscreteValue)paraValue).Value);
 
-                //if (enableLog)
-                //    WriteLog("Discrete Parameter : " + pName + " = " + ((ParameterDiscreteValue)paraValue).Value);
-
                 pValues.Add(paraValue);
                 paraValue = null;
             }
@@ -113,9 +107,6 @@ namespace CrystalReportsNinja
                 ((ParameterRangeValue)paraValue).StartValue = GetStartValue(inputString);
                 ((ParameterRangeValue)paraValue).EndValue = GetEndValue(inputString);
                 Console.WriteLine("Range Parameter : {0} = {1} to {2} ", pName, ((ParameterRangeValue)paraValue).StartValue, ((ParameterRangeValue)paraValue).EndValue);
-
-                //if (enableLog)
-                //    WriteLog("Range Parameter : " + pName + " = " + ((ParameterRangeValue)paraValue).StartValue + " to " + ((ParameterRangeValue)paraValue).EndValue);
 
                 pValues.Add(paraValue);
                 paraValue = null;
