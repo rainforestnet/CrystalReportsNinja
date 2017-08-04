@@ -18,6 +18,9 @@ Copy CrystalReportsNinja.exe and install the right CRforVS runtime of your platf
 
 ## How to use
 Locate the folder of CrystalReportsNinja.exe and run CrystalReportsNinja -? 
+The only mandatory argument is "-F", in which is for user to specify a Crystal Reports file.
+
+### List of arguments
 
 * -F Crystal Reports filename to be loaded (i.e. "C:\Report Source\Report1.rpt") 
 * -O Crystal Reports Output filename (i.e. "C:\Reports Output\Report1.pdf" ) [Optional]
@@ -32,11 +35,60 @@ Locate the folder of CrystalReportsNinja.exe and run CrystalReportsNinja -?
 * -a Pass Crystal Reports file parameter set on run-time
 * -l Create a log file into CrystalReportsNinja.exe directory
 
-## Passing in Parameters of Crystal Reports
+### -F, Crystal Reports source file
+This is the only mandatory (must specify) argument, it allows your to specify the Crystal Reports filename to be exported.
+
+### -O, Crystal Reports output file
+If -O is not specified, Crystal Reports Exporter will just export the Crystal Reports into the same directory when Crystal Reports source file is resided.
+
+The filename of the exported file is the same as Crystal Report source file and ending with timestamp (yyyyMMddHHmmss).
+
+### -E, Crystal Reports Export File Type
+There are 13 file formats that you can export a Crystal Reports file.
+
+Use -E to specify desired file format. If -E argument is not supplied, CrystalReportsNinja will look into the output file extension, if output file is report1.pdf, it will then set to be Adobe PDF format. If file extension cannot be mapped into supported file format, CrystalReportsNinja will export your Crystal Reports into plain text file.
+
+File type	Descriptions
+-------------------------
+txt		Plain text file
+pdf		Adobe Portable Document format (pdf)
+doc		Microsoft Word
+xls		Microsoft Excel
+xlsdata		Microsoft Excel with Data Only
+rtf		Rich Text format
+ertf	Editable Rich Text format
+tab		Tab delimited text file
+csv		Comma delimited text file
+csv		Comma delimited text file
+xml		xml file
+htm		HTML file
+rpt		Crystal Reports file
+print	Print Crystal Report to a printer
+
+### -S, Server name or Data Source name
+Most of the time, you need not specify the server name or data source name of your Crystal Reports file as every Crystal Reports file saves data source information during design time.
+
+Therefore, you only specify a server name when you want Crystal Reports to retrieve data from another data source that is different from what it is saved in Crystal Reports file during design time.
+
+If your crystal Reports data source is one of the ODBC DSN (regardless of User DSN or System DSN), the DSN will be your Server Name (-S).
+
+### -D, Database name
+Similarly to Server Name. Database Name is completely optional. You only specify a Database Name when you intend to retrieve data from another database that is different from default database name that is saved in Crystal Reports file.
+
+### -U and - P, Username and Password to login to Data source
+If you are using database like Microsoft SQL server, MySQL or Oracle, you are most likely required to supply a username and password to login to database.
+
+If you are using trusted connection to your SQL server, you wouldn't need to supply username and password when you run CrystalReportsNinja.
+
+If you are using a password protected Microsoft Access database, you need only to specify password and not username.
+
+### -a Passing in Parameters of Crystal Reports
 We can have as many Parameters as we want in one Crystal Reports file. 
 When we refresh a report, it prompts user to input the value of parameter in runtime in order to produce the result that user wants.
 
 You can pass parameter value to CrystalReportsNinja.exe when it is executed.
+
+
 
 ###Example 1
 Let's take an example of a Crystal Reports file test.rpt located in C: root directory. The Crystal Reports file has two parameters, namely Supplier and Date Range.
