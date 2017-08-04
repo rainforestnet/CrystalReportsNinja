@@ -48,24 +48,6 @@ There are 13 file formats that you can export a Crystal Reports file.
 
 Use -E to specify desired file format. If -E argument is not supplied, CrystalReportsNinja will look into the output file extension, if output file is report1.pdf, it will then set to be Adobe PDF format. If file extension cannot be mapped into supported file format, CrystalReportsNinja will export your Crystal Reports into plain text file.
 
-File type	Descriptions
-
-txt		Plain text file
-pdf		Adobe Portable Document format (pdf)
-doc		Microsoft Word
-xls		Microsoft Excel
-xlsdata		Microsoft Excel with Data Only
-rtf		Rich Text format
-ertf	Editable Rich Text format
-tab		Tab delimited text file
-csv		Comma delimited text file
-csv		Comma delimited text file
-xml		xml file
-htm		HTML file
-rpt		Crystal Reports file
-print	Print Crystal Report to a printer
-
-
 <table class="table table-bordered table-condensed table-hover">
 <thead>
 <tr>
