@@ -49,7 +49,7 @@ There are 13 file formats that you can export a Crystal Reports file.
 Use -E to specify desired file format. If -E argument is not supplied, CrystalReportsNinja will look into the output file extension, if output file is report1.pdf, it will then set to be Adobe PDF format. If file extension cannot be mapped into supported file format, CrystalReportsNinja will export your Crystal Reports into plain text file.
 
 File type	Descriptions
--------------------------
+
 txt		Plain text file
 pdf		Adobe Portable Document format (pdf)
 doc		Microsoft Word
@@ -64,6 +64,74 @@ xml		xml file
 htm		HTML file
 rpt		Crystal Reports file
 print	Print Crystal Report to a printer
+
+
+<table class="table table-bordered table-condensed table-hover">
+<thead>
+<tr>
+<th>File type</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>txt</td>
+<td>Plain text file</td>
+</tr>
+<tr>
+<td>pdf</td>
+<td>Adobe Portable Document format (pdf)</td>
+</tr>
+<tr>
+<td>doc</td>
+<td>Microsoft Word </td>
+</tr>
+<tr>
+<td>xls</td>
+<td>Microsoft Excel </td>
+</tr>
+<tr>
+<td>xlsdata</td>
+<td>Microsoft Excel with Data Only</td>
+</tr>
+<tr>
+<td>rtf</td>
+<td>Rich Text format</td>
+</tr>
+<tr>
+<td>ertf</td>
+<td>Editable Rich Text format</td>
+</tr>
+<tr>
+<td>tab</td>
+<td>Tab delimited text file </td>
+</tr>
+<tr>
+<td>csv</td>
+<td>Comma delimited text file</td>
+</tr>
+<tr>
+<td>csv</td>
+<td>Comma delimited text file </td>
+</tr>
+<tr>
+<td>xml</td>
+<td>xml file </td>
+</tr>
+<tr>
+<td>htm</td>
+<td>HTML file </td>
+</tr>
+<tr>
+<td>rpt</td>
+<td>Crystal Reports file </td>
+</tr>
+<tr>
+<td>print</td>
+<td>Print Crystal Report to a printer </td>
+</tr>
+</tbody>
+</table>
 
 ### -S, Server name or Data Source name
 Most of the time, you need not specify the server name or data source name of your Crystal Reports file as every Crystal Reports file saves data source information during design time.
