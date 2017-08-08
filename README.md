@@ -1,5 +1,5 @@
 # Crystal Reports Ninja
-This is a complete rewritten based on Crystal-Reports-Exporter in order to enhance code readability and maintainability.
+This is a complete rewritten based on [Crystal-Reports-Exporter] (https://github.com/rainforestnet/Crystal-Reports-Exporter#crystal-reports-exporter) in order to enhance code readability and maintainability.
 
 Crystal Reports Ninja is an open source Windows Console program runs on .NET Framework 4.5.
 It loads external Crystal Report file (.rpt) and export into various file formats such as xls, pdf as well as print to printer.
@@ -46,7 +46,9 @@ The filename of the exported file is the same as Crystal Report source file and 
 ### -E, Crystal Reports Export File Type
 There are 13 file formats that you can export a Crystal Reports file.
 
-Use -E to specify desired file format. If -E argument is not supplied, CrystalReportsNinja will look into the output file extension, if output file is report1.pdf, it will then set to be Adobe PDF format. If file extension cannot be mapped into supported file format, CrystalReportsNinja will export your Crystal Reports into plain text file.
+Use -E to specify desired file format. If -E argument is not supplied, CrystalReportsNinja will look into the output file extension, 
+if output file is report1.pdf, it will then set to be Adobe PDF format. 
+If file extension cannot be mapped into supported file format, CrystalReportsNinja will export your Crystal Reports into plain text file.
 
 <table class="table table-bordered table-condensed table-hover">
 <thead>
