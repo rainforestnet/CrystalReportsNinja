@@ -1,5 +1,5 @@
 # Crystal Reports Ninja
-This is a complete rewritten based on [Crystal-Reports-Exporter] (https://github.com/rainforestnet/Crystal-Reports-Exporter#crystal-reports-exporter) in order to enhance code readability and maintainability.
+This is a complete rewritten based on [Crystal-Reports-Exporter](https://github.com/rainforestnet/Crystal-Reports-Exporter#crystal-reports-exporter) in order to enhance code readability and maintainability.
 
 Crystal Reports Ninja is an open source Windows Console program runs on .NET Framework 4.5.
 It loads external Crystal Report file (.rpt) and export into various file formats such as xls, pdf as well as print to printer.
