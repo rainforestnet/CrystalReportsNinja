@@ -64,7 +64,6 @@ namespace CrystalReportsNinja
                     ParameterValues values = paraCore.GetParameterValues(paramDefs[i]);
                     paramDefs[i].ApplyCurrentValues(values);
                 }
-
             }
         }
 
@@ -82,17 +81,19 @@ namespace CrystalReportsNinja
             _outputFormat = ReportArguments.OutputFormat;
             _printToPrinter = ReportArguments.PrintOutput;
 
+            bool specifiedFileName = _outputFilename != null ? true : false;
+            bool specifiedFormat = _outputFormat != null ? true : false;
+
             if (!_printToPrinter)
             {
                 string fileExt = "";
 
                 //default set to text file
-                if (_outputFormat == null && _outputFilename == null)
+                if (!specifiedFileName && !specifiedFormat)
                     _outputFormat = "txt";
 
-                //if output path isn't specified but there is a output format
-                //use output format to set output path
-                if (_outputFilename == null && _outputFormat != null)
+                // Use output format to set output file name extension
+                if (specifiedFormat)
                 {
                     if (_outputFormat.ToUpper() == "XLSDATA")
                         fileExt = "xls";
@@ -103,18 +104,31 @@ namespace CrystalReportsNinja
                     else
                         fileExt = _outputFormat;
                 }
-                _outputFilename = String.Format("{0}-{1}.{2}", _sourceFilename.Substring(0, _sourceFilename.LastIndexOf(".rpt")), DateTime.Now.ToString("yyyyMMddHHmmss"), fileExt);
-                _logger.Write(string.Format("Output Filename : {0}", _outputFilename));
 
-                if (_outputFormat == null && _outputFilename != null)
+                // Use output file name extension to set output format
+                if (specifiedFileName && !specifiedFormat)
                 {
                     int lastIndexDot = _outputFilename.LastIndexOf(".");
-                    fileExt = _outputFilename.Substring(lastIndexDot + 1, 3);
+                    fileExt = _outputFilename.Substring(lastIndexDot + 1, 3); //what if file ext has 4 char
 
                     //ensure filename extension has 3 char after the dot (.)
                     if ((_outputFilename.Length == lastIndexDot + 4) && (fileExt.ToUpper() == "RTF" || fileExt.ToUpper() == "TXT" || fileExt.ToUpper() == "CSV" || fileExt.ToUpper() == "PDF" || fileExt.ToUpper() == "RPT" || fileExt.ToUpper() == "DOC" || fileExt.ToUpper() == "XLS" || fileExt.ToUpper() == "XML" || fileExt.ToUpper() == "HTM"))
                         _outputFormat = _outputFilename.Substring(lastIndexDot + 1, 3);
                 }
+
+                if (specifiedFileName && specifiedFormat)
+                {
+                    int lastIndexDot = _outputFilename.LastIndexOf(".");
+                    if (fileExt != _outputFilename.Substring(lastIndexDot + 1, 3)) //what if file ext has 4 char
+                    {
+                        _outputFilename = string.Format("{0}.{1}", _outputFilename, fileExt);
+                    }
+                }
+
+                if (!specifiedFileName)
+                    _outputFilename = String.Format("{0}-{1}.{2}", _sourceFilename.Substring(0, _sourceFilename.LastIndexOf(".rpt")), DateTime.Now.ToString("yyyyMMddHHmmss"), fileExt);
+
+                _logger.Write(string.Format("Output Filename : {0}", _outputFilename));
                 _logger.Write(string.Format("Output format : {0}", _outputFormat));
             }
         }
