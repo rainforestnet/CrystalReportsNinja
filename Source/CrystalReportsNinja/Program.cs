@@ -8,7 +8,7 @@ namespace CrystalReportsNinja
         {
             try
             {
-                // read program arguments
+                // read program arguments into Argument Container
                 ArgumentContainer argContainer = new ArgumentContainer();
                 argContainer.ReadArguments(args);
 
