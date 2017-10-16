@@ -125,7 +125,7 @@ namespace CrystalReportsNinja
                         else if (parameters[i].ToUpper() == "-D")
                             DatabaseName = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-E")
-                            OutputFormat = parameters[i + 1];
+                            {OutputFormat = parameters[i + 1]; if (OutputFormat.ToUpper() == "PRINT") { PrintOutput = true; }}
                         else if (parameters[i].ToUpper() == "-N")
                             PrinterName = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-C")
