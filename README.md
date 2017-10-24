@@ -9,8 +9,6 @@ Since it is a console (command-line) app, it can be invoked by Task Scheduler, b
 ## Directory structure
 * - Source (Source Code)
 * - Deployment
-	- CRforVS_redist_install_32bit_13_0_20.zip (runtime needed for 32-bit Windows machine)
-	- CRforVS_redist_install_64bit_13_0_20.zip (runtime needed for 64-bit Windows machine)
 	- CrystalReportsNinja.exe  (Executable compiled by Visual Studio 2017 for .NET Framework 4.5)
 
 ## Installation
