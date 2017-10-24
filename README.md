@@ -9,10 +9,15 @@ Since it is a console (command-line) app, it can be invoked by Task Scheduler, b
 ## Directory structure
 * - Source (Source Code)
 * - Deployment
-	- CrystalReportsNinja.exe  (Executable compiled by Visual Studio 2017 for .NET Framework 4.5)
+		- 32-bit
+			Contains executable and files for 32-bit (x86) systems.
+		- 64-bit
+			Contains executable and files for 64-bit (x64) systems.
 
 ## Installation
-Copy CrystalReportsNinja.exe and install the right CRforVS runtime of your platform and it should work.
+* - Install the SAP Crystal Reports runtime engine for .Net Framwork for 32-bit and/or 64-bit version 13.0.21 or later.
+		http://www.crystalreports.com/crystal-reports-visual-studio/
+* - Copy the CrystalReportsNinja.exe files to a new or existing directory.
 
 ## How to use
 Locate the folder of CrystalReportsNinja.exe and run CrystalReportsNinja -? 
