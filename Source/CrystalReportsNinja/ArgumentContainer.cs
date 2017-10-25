@@ -76,7 +76,7 @@ namespace CrystalReportsNinja
         public bool EnableLog { get; set; }
         
         /// <summary>
-        /// Email address to email to
+        /// Email address to email to.  (Mandatory for emailing report)
         /// </summary>
         public string MailTo { get; set; }
         
@@ -84,6 +84,31 @@ namespace CrystalReportsNinja
         /// To refresh report or not
         /// </summary>
         public bool Refresh { get; set; }
+
+        /// <summary>
+        /// To refresh report or not
+        /// </summary>
+        public bool EmailOutput { get; set; }
+
+        /// <summary>
+        /// From Email Address.  Defaults to CrystalReportsNinja@noreply.com
+        /// </summary>
+        public string MailFrom { get; set; }
+
+        /// <summary>
+        /// SMTP Address.  (Mandatory for emailing report)
+        /// </summary>
+        public String SmtpServer { get; set; }
+
+        /// <summary>
+        /// Email Subject.  Defaults to Crystal Reports Ninja
+        /// </summary>
+        public String EmailSubject { get; set; }
+
+        /// <summary>
+        /// Email Delete File.  Defaults to false
+        /// </summary>
+        public Boolean EmailKeepFile { get; set; }
 
         public ArgumentContainer()
         {
@@ -93,8 +118,13 @@ namespace CrystalReportsNinja
             PrintOutput = false;
             PrintCopy = 1;
             PrinterName = "";
-            MailTo = "";
+            MailTo = null;
             Refresh = true;
+            EmailOutput = false;
+            MailFrom = "CrystalReportsNinja@noreply.com";
+            SmtpServer = null;
+            EmailSubject = "Crystal Reports Ninja";
+            EmailKeepFile = false;
 
             // Collection of string to store parameters
             ParameterCollection = new List<string>();
@@ -139,8 +169,17 @@ namespace CrystalReportsNinja
                         }
                         else if (parameters[i].ToUpper() == "-A")
                             ParameterCollection.Add(parameters[i + 1]);
-                        else if (parameters[i].ToUpper() == "-TO")
+                        else if (parameters[i].ToUpper() == "-M")
+                            EmailOutput = true;                        
+                        else if (parameters[i].ToUpper() == "-MF")
+                            MailFrom = parameters[i + 1];
+                        else if (parameters[i].ToUpper() == "-MS")
+                            EmailSubject = parameters[i + 1];
+                        else if (parameters[i].ToUpper() == "-MT")
                             MailTo = parameters[i + 1];
+                        else if (parameters[i].ToUpper() == "-MZ")
+                            SmtpServer = parameters[i + 1];
+
                     }
                 }
 

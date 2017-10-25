@@ -29,14 +29,19 @@ The only mandatory argument is "-F", in which is for user to specify a Crystal R
 * -O Crystal Reports Output filename (i.e. "C:\Reports Output\Report1.pdf" ) [Optional]
 * -E Intended file format to be exported.(i.e. pdf, doc, xls .. and etc). If you wish to print Crystal Reports to a printer, simply "-E print" instead of specifying file format.
 
-* -N Printer Name. If printer name is not specified, it looks for default printer in the computer. If network printer, -N \\computer01\printer1
-* -C Number of copy to be printed (any integer value i.e. 1,2,3..)
-* -S Server Name for server where data resides. Only one server per Crystal Reports is allowed.
-* -D Database Name. 
-* -U Data source / server login username. Do not specify username and password for Integrated Security connection.
-* -P Data source / server login password. Do not specify username and password for Integrated Security connection.
-* -a Pass Crystal Reports file parameter set on run-time
-* -l Create a log file into CrystalReportsNinja.exe directory
+* -N  Printer Name. If printer name is not specified, it looks for default printer in the computer. If network printer, -N \\computer01\printer1
+* -C  Number of copy to be printed (any integer value i.e. 1,2,3..)
+* -S  Server Name for server where data resides. Only one server per Crystal Reports is allowed.
+* -D  Database Name. 
+* -U  Data source / server login username. Do not specify username and password for Integrated Security connection.
+* -P  Data source / server login password. Do not specify username and password for Integrated Security connection.
+* -a  Pass Crystal Reports file parameter set on run-time.
+* -l  Create a log file into CrystalReportsNinja.exe directory.
+* -M  Email Report Output.
+* -MF The From Address that should be used in the Email.
+* -MT The Address that the email should be sent to.
+* -MS The Text that should appear in the Subject Line of the Email.
+* -MZ The SMTP server address.
 
 ### -F, Crystal Reports source file
 This is the only mandatory (must specify) argument, it allows your to specify the Crystal Reports filename to be exported.
@@ -47,11 +52,9 @@ If -O is not specified, Crystal Reports Exporter will just export the Crystal Re
 The filename of the exported file is the same as Crystal Report source file and ending with timestamp (yyyyMMddHHmmss).
 
 ### -E, Crystal Reports Export File Type
-There are 13 file formats that you can export a Crystal Reports file.
+Use -E to specify desired file format. There are 13 file formats that you can export a Crystal Reports file.  If -E argument is not supplied, CrystalReportsNinja will look into the output file extension.  If output file is report1.pdf, it will then set to be Adobe PDF format. If file extension cannot be mapped into supported file format, CrystalReportsNinja will export your Crystal Reports into plain text file.
 
-Use -E to specify desired file format. If -E argument is not supplied, CrystalReportsNinja will look into the output file extension, 
-if output file is report1.pdf, it will then set to be Adobe PDF format. 
-If file extension cannot be mapped into supported file format, CrystalReportsNinja will export your Crystal Reports into plain text file.
+###
 
 <table class="table table-bordered table-condensed table-hover">
 <thead>
@@ -137,6 +140,20 @@ If you are using trusted connection to your SQL server, you wouldn't need to sup
 
 If you are using a password protected Microsoft Access database, you need only to specify password and not username.
 
+### -M Email Report
+
+### -MF From Email Address
+The email address that the email will appear to be from.  Defaults to CrystalReportsNinja@noreply.com.
+
+### -MT To Email Address
+The email address that the email will be sent to.  Mandatory for Email Report.
+
+### -MS Subject
+The text that will appear in the subject line of the email.  Defaults to Crystal Reports Ninja.
+
+### -MZ SMTP Server
+SMTP server address.  Mandatory for Email Report.
+
 ### -a Passing in Parameters of Crystal Reports
 We can have as many Parameters as we want in one Crystal Reports file. 
 When we refresh a report, it prompts user to input the value of parameter in runtime in order to produce the result that user wants.
@@ -193,3 +210,5 @@ Example to print Crystal Reports output to printer
 c:\>CrystalReportsNinja -F report101.rpt -E print -N "HP LaserJet 1200" -C 3
 ```
 
+Email Report Example
+-F Z:\CrystalReportsNinja\CrystalReports\ConsignaStoreInventoryValue.rpt -E pdf -O Z:\CrystalReportsNinja\Output\Test.pdf -a "@CustomerId:12345" -a "@Warehouse:987" -M -MF "Report1@company.com" -MT "good_user@company.com" -MS "Testing Ninja" -MZ "mail.company.com"

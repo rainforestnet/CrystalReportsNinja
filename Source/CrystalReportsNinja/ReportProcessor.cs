@@ -2,6 +2,8 @@
 using CrystalDecisions.Shared;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Mail;
 
 namespace CrystalReportsNinja
 {
@@ -272,6 +274,25 @@ namespace CrystalReportsNinja
 
                 _reportDoc.Export();
                 _logger.Write(string.Format("Report exported to : {0}", _outputFilename));
+
+                if (ReportArguments.EmailOutput)
+                {
+                    using (MailMessage _MailMessage = new MailMessage())
+                    {
+                        _MailMessage.Attachments.Add(new Attachment(_outputFilename));
+                        _MailMessage.From = new MailAddress(ReportArguments.MailFrom);
+                        _MailMessage.Subject = ReportArguments.EmailSubject;
+                        _MailMessage.To.Add(ReportArguments.MailTo);
+
+                        SmtpClient smtpClient = new SmtpClient();
+                        smtpClient.Host = ReportArguments.SmtpServer;
+                        smtpClient.UseDefaultCredentials = true;
+                        smtpClient.Send(_MailMessage);
+                    }
+
+                    if (!ReportArguments.EmailKeepFile)
+                    { File.Delete(_outputFilename); }
+                }
             }
             Console.WriteLine("Completed");
         }
