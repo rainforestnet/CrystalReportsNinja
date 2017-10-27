@@ -2,6 +2,8 @@
 using CrystalDecisions.Shared;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Mail;
 
 namespace CrystalReportsNinja
 {
@@ -22,11 +24,13 @@ namespace CrystalReportsNinja
         /// Constructor
         /// </summary>
         /// <param name="logfilename"></param>
-        public ReportProcessor(string logfilename)
+        public ReportProcessor(string logfilename, ArgumentContainer _ArgumentContainer)
         {
             _reportDoc = new ReportDocument();
             _logfilename = logfilename;
-            _logger = new LogWriter(_logfilename);
+            _logger = new LogWriter(_logfilename, _ArgumentContainer.EnableLogToConsole);
+
+            ReportArguments = _ArgumentContainer;
         }
 
         /// <summary>
@@ -56,7 +60,7 @@ namespace CrystalReportsNinja
             var paramCount = _reportDoc.ParameterFields.Count;
             if (paramCount > 0)
             {
-                ParameterCore paraCore = new ParameterCore(_logfilename, ReportArguments.ParameterCollection);
+                ParameterCore paraCore = new ParameterCore(_logfilename, ReportArguments);
                 paraCore.ProcessRawParameters();
                 var paramDefs = _reportDoc.DataDefinition.ParameterFields;
                 for (int i = 0; i < paramDefs.Count; i++)
@@ -272,6 +276,25 @@ namespace CrystalReportsNinja
 
                 _reportDoc.Export();
                 _logger.Write(string.Format("Report exported to : {0}", _outputFilename));
+
+                if (ReportArguments.EmailOutput)
+                {
+                    using (MailMessage _MailMessage = new MailMessage())
+                    {
+                        _MailMessage.Attachments.Add(new Attachment(_outputFilename));
+                        _MailMessage.From = new MailAddress(ReportArguments.MailFrom);
+                        _MailMessage.Subject = ReportArguments.EmailSubject;
+                        _MailMessage.To.Add(ReportArguments.MailTo);
+
+                        SmtpClient smtpClient = new SmtpClient();
+                        smtpClient.Host = ReportArguments.SmtpServer;
+                        smtpClient.UseDefaultCredentials = true;
+                        smtpClient.Send(_MailMessage);
+                    }
+
+                    if (!ReportArguments.EmailKeepFile)
+                    { File.Delete(_outputFilename); }
+                }
             }
             Console.WriteLine("Completed");
         }

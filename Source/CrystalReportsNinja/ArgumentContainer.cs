@@ -76,7 +76,7 @@ namespace CrystalReportsNinja
         public bool EnableLog { get; set; }
         
         /// <summary>
-        /// Email address to email to
+        /// Email address to email to.  (Mandatory for emailing report)
         /// </summary>
         public string MailTo { get; set; }
         
@@ -84,6 +84,36 @@ namespace CrystalReportsNinja
         /// To refresh report or not
         /// </summary>
         public bool Refresh { get; set; }
+
+        /// <summary>
+        /// To refresh report or not
+        /// </summary>
+        public bool EmailOutput { get; set; }
+
+        /// <summary>
+        /// From Email Address.  Defaults to CrystalReportsNinja@noreply.com
+        /// </summary>
+        public string MailFrom { get; set; }
+
+        /// <summary>
+        /// SMTP Address.  (Mandatory for emailing report)
+        /// </summary>
+        public String SmtpServer { get; set; }
+
+        /// <summary>
+        /// Email Subject.  Defaults to Crystal Reports Ninja
+        /// </summary>
+        public String EmailSubject { get; set; }
+
+        /// <summary>
+        /// Email Delete File.  Defaults to false
+        /// </summary>
+        public Boolean EmailKeepFile { get; set; }
+
+        /// <summary>
+        /// Write log output to Console
+        /// </summary>
+        public bool EnableLogToConsole { get; set; }
 
         public ArgumentContainer()
         {
@@ -93,8 +123,14 @@ namespace CrystalReportsNinja
             PrintOutput = false;
             PrintCopy = 1;
             PrinterName = "";
-            MailTo = "";
+            MailTo = null;
             Refresh = true;
+            EmailOutput = false;
+            MailFrom = "CrystalReportsNinja@noreply.com";
+            SmtpServer = null;
+            EmailSubject = "Crystal Reports Ninja";
+            EmailKeepFile = false;
+            EnableLogToConsole = false;
 
             // Collection of string to store parameters
             ParameterCollection = new List<string>();
@@ -125,7 +161,7 @@ namespace CrystalReportsNinja
                         else if (parameters[i].ToUpper() == "-D")
                             DatabaseName = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-E")
-                            OutputFormat = parameters[i + 1];
+                            {OutputFormat = parameters[i + 1]; if (OutputFormat.ToUpper() == "PRINT") { PrintOutput = true; }}
                         else if (parameters[i].ToUpper() == "-N")
                             PrinterName = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-C")
@@ -139,8 +175,17 @@ namespace CrystalReportsNinja
                         }
                         else if (parameters[i].ToUpper() == "-A")
                             ParameterCollection.Add(parameters[i + 1]);
-                        else if (parameters[i].ToUpper() == "-TO")
+                        else if (parameters[i].ToUpper() == "-M")
+                            EmailOutput = true;                        
+                        else if (parameters[i].ToUpper() == "-MF")
+                            MailFrom = parameters[i + 1];
+                        else if (parameters[i].ToUpper() == "-MS")
+                            EmailSubject = parameters[i + 1];
+                        else if (parameters[i].ToUpper() == "-MT")
                             MailTo = parameters[i + 1];
+                        else if (parameters[i].ToUpper() == "-MZ")
+                            SmtpServer = parameters[i + 1];
+
                     }
                 }
 
@@ -153,6 +198,8 @@ namespace CrystalReportsNinja
                 if (parameters[i].ToUpper() == "-NR")
                     Refresh = false;
 
+                if (parameters[i].ToUpper() == "-LC")
+                    EnableLogToConsole = true;
             }
             #endregion
         }
