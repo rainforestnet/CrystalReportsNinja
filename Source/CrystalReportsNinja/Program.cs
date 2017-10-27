@@ -4,7 +4,7 @@ namespace CrystalReportsNinja
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             try
             {
@@ -30,7 +30,11 @@ namespace CrystalReportsNinja
             {
                 Console.WriteLine(string.Format("Exception: {0}",ex.Message));
                 Console.WriteLine(string.Format("Inner Exception: {0}", ex.InnerException));
+
+                return 1;
             }
+
+            return 0;
         }
     }
 }
