@@ -24,11 +24,13 @@ namespace CrystalReportsNinja
         /// Constructor
         /// </summary>
         /// <param name="logfilename"></param>
-        public ReportProcessor(string logfilename)
+        public ReportProcessor(string logfilename, ArgumentContainer _ArgumentContainer)
         {
             _reportDoc = new ReportDocument();
             _logfilename = logfilename;
-            _logger = new LogWriter(_logfilename);
+            _logger = new LogWriter(_logfilename, _ArgumentContainer.EnableLogToConsole);
+
+            ReportArguments = _ArgumentContainer;
         }
 
         /// <summary>
@@ -58,7 +60,7 @@ namespace CrystalReportsNinja
             var paramCount = _reportDoc.ParameterFields.Count;
             if (paramCount > 0)
             {
-                ParameterCore paraCore = new ParameterCore(_logfilename, ReportArguments.ParameterCollection);
+                ParameterCore paraCore = new ParameterCore(_logfilename, ReportArguments);
                 paraCore.ProcessRawParameters();
                 var paramDefs = _reportDoc.DataDefinition.ParameterFields;
                 for (int i = 0; i < paramDefs.Count; i++)

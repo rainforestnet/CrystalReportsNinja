@@ -37,6 +37,7 @@ The only mandatory argument is "-F", in which is for user to specify a Crystal R
 * -P  Data source / server login password. Do not specify username and password for Integrated Security connection.
 * -a  Pass Crystal Reports file parameter set on run-time.
 * -l  Create a log file into CrystalReportsNinja.exe directory.
+* -lc Ouput log info to Console.
 * -M  Email Report Output.
 * -MF The From Address that should be used in the Email.
 * -MT The Address that the email should be sent to.

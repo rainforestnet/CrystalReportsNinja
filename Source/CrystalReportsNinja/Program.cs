@@ -21,10 +21,7 @@ namespace CrystalReportsNinja
                     if (argContainer.EnableLog)
                         _logFilename = "ninja-" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".log";
 
-                    ReportProcessor reportNinja = new ReportProcessor(_logFilename)
-                    {
-                        ReportArguments = argContainer,
-                    };
+                    ReportProcessor reportNinja = new ReportProcessor(_logFilename, argContainer);
 
                     reportNinja.Run();
                 }

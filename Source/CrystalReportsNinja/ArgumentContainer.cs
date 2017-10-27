@@ -110,6 +110,11 @@ namespace CrystalReportsNinja
         /// </summary>
         public Boolean EmailKeepFile { get; set; }
 
+        /// <summary>
+        /// Write log output to Console
+        /// </summary>
+        public bool EnableLogToConsole { get; set; }
+
         public ArgumentContainer()
         {
             // Assigning default values
@@ -125,6 +130,7 @@ namespace CrystalReportsNinja
             SmtpServer = null;
             EmailSubject = "Crystal Reports Ninja";
             EmailKeepFile = false;
+            EnableLogToConsole = false;
 
             // Collection of string to store parameters
             ParameterCollection = new List<string>();
@@ -192,6 +198,8 @@ namespace CrystalReportsNinja
                 if (parameters[i].ToUpper() == "-NR")
                     Refresh = false;
 
+                if (parameters[i].ToUpper() == "-LC")
+                    EnableLogToConsole = true;
             }
             #endregion
         }

@@ -16,12 +16,12 @@ namespace CrystalReportsNinja
         private LogWriter _logger;
         private List<string> _parameterCollection;
 
-        public ParameterCore(string logfilename, List<string> paramCollection)
+        public ParameterCore(string logfilename, ArgumentContainer _ArgumentContainer)
         {
             _userParams = new List<UserParameter>();
 
-            _parameterCollection = paramCollection;
-            _logger = new LogWriter(logfilename);
+            _parameterCollection = _ArgumentContainer.ParameterCollection;
+            _logger = new LogWriter(logfilename, _ArgumentContainer.EnableLogToConsole);
         }
 
         public void ProcessRawParameters()
