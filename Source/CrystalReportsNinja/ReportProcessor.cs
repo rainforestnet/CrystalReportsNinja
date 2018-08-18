@@ -208,7 +208,13 @@ namespace CrystalReportsNinja
                 else if (_outputFormat.ToUpper() == "CSV")
                     _reportDoc.ExportOptions.ExportFormatType = ExportFormatType.CharacterSeparatedValues;
                 else if (_outputFormat.ToUpper() == "PDF")
+                {
                     _reportDoc.ExportOptions.ExportFormatType = ExportFormatType.PortableDocFormat;
+
+                    var grpCnt = _reportDoc.DataDefinition.Groups.Count;
+                    if (grpCnt > 0)
+                        _reportDoc.ExportOptions.ExportFormatOptions = new PdfFormatOptions { CreateBookmarksFromGroupTree = true };
+                }
                 else if (_outputFormat.ToUpper() == "RPT")
                     _reportDoc.ExportOptions.ExportFormatType = ExportFormatType.CrystalReport;
                 else if (_outputFormat.ToUpper() == "DOC")
