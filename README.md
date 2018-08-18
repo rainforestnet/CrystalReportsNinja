@@ -6,6 +6,9 @@ It loads external Crystal Report file (.rpt) and export into various file format
 
 Since it is a console (command-line) app, it can be invoked by Task Scheduler, batch file (.bat), command line file (.cmd), as well as Web API or Web Applications.
 
+## License
+[MIT License](https://en.wikipedia.org/wiki/MIT_License)
+
 ## Directory structure
 * - Source (Source Code)
 * - Deployment
