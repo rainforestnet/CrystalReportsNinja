@@ -271,11 +271,12 @@ namespace CrystalReportsNinja
             else
             {
                 _reportDoc.ExportOptions.ExportDestinationType = ExportDestinationType.DiskFile;
+                DiskFileDestinationOptions diskOptions = new DiskFileDestinationOptions
+                {
+                    DiskFileName = _outputFilename
+                };
 
-                DiskFileDestinationOptions diskOptions = new DiskFileDestinationOptions();
                 _reportDoc.ExportOptions.DestinationOptions = diskOptions;
-                diskOptions.DiskFileName = _outputFilename;
-
                 _reportDoc.Export();
                 _logger.Write(string.Format("Report exported to : {0}", _outputFilename));
             }
