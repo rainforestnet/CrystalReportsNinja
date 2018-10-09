@@ -26,7 +26,15 @@ namespace CrystalReportsNinja
                         ReportArguments = argContainer,
                     };
 
-                    reportNinja.Run();
+                    if (argContainer.ReportInfo)
+                    {
+                        var reportInfo = reportNinja.GetReportInfo();
+                        reportInfo.Output(argContainer.OutputFormat, argContainer.OutputPath);
+                    }
+                    else
+                    {
+                        reportNinja.Run();
+                    }
                 }
             }
             catch (Exception ex)

@@ -54,6 +54,7 @@
     <Compile Include="ParameterCore.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportInfo.cs" />
     <Compile Include="ReportProcessor.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -24,16 +24,19 @@ namespace CrystalReportsNinja
             Console.WriteLine("-F Crystal reports path and filename (Mandatory)");
             Console.WriteLine("-S Database Server Name (instance name)");
             Console.WriteLine("-D Database Name");
-            Console.WriteLine("-O Crystal reports Output path and filename");
+            Console.WriteLine("-O Output path and filename");
             Console.WriteLine("-E Export file type.(pdf,doc,xls,rtf,htm,rpt,txt,csv...) If print to printer simply specify \"print\"");
             Console.WriteLine("-a Parameter value");
             Console.WriteLine("-N Printer Name (Network printer : \\\\PrintServer\\Printername or Local printer : printername)");
             Console.WriteLine("-C Number of copy to be printed");
-            Console.WriteLine("-l To write a log file. filename ninja-yyyyMMddHHmmss.log");
+            Console.WriteLine("-L To write a log file. filename ninja-yyyyMMddHHmmss.log");
+            Console.WriteLine("-I Display report info and quit. If supplied, -E only accepts \"print\" (i.e. human readable, the default) and tab");
             Console.WriteLine("---------------------------------------------------");
             Console.WriteLine("\nExample: C:\\> CrystalReportsNinja -U user1 -P mypass -S Server01 -D \"ExtremeDB\" -F c:\\test.rpt -O d:\\test.pdf -a \"Supplier Name:Active Outdoors\" -a \"Date Range:(12-01-2001,12-04-2002)\"");
-            Console.WriteLine("Learn more in http://www.rainforestnet.com/crystal-reports-exporter/");
-            
+            Console.WriteLine("Example: C:\\> CrystalReportsNinja -F c:\\test.rpt -I");
+            Console.WriteLine("Example: PoSH> ls C:\\ReportFolder -Filter *.rpt | % { CrystalReportsNinja -F $_.FullName -I -E tab -O C:\\ReportListing.tsv }");
+
+            Console.WriteLine("Learn more in https://github.com/rainforestnet/CrystalReportsNinja");
         }
 
         /// <summary>

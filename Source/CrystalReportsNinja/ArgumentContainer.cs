@@ -62,14 +62,19 @@ namespace CrystalReportsNinja
         public int PrintCopy { get; set; }
         
         /// <summary>
-        /// -I Printer name
+        /// -N Printer name
         /// </summary>
         public string PrinterName { get; set; }
 
         /// To display Help message
         /// </summary>
         public bool GetHelp { get; set; }
-        
+
+        /// <summary>
+        /// -I report info only flag
+        /// </summary>
+        public bool ReportInfo { get; set; }
+
         /// <summary>
         /// To produce log file
         /// </summary>
@@ -95,6 +100,7 @@ namespace CrystalReportsNinja
             PrinterName = "";
             MailTo = "";
             Refresh = true;
+            ReportInfo = false;
 
             // Collection of string to store parameters
             ParameterCollection = new List<string>();
@@ -152,6 +158,9 @@ namespace CrystalReportsNinja
 
                 if (parameters[i].ToUpper() == "-NR")
                     Refresh = false;
+
+                if (parameters[i].ToUpper() == "-I")
+                    ReportInfo = true;
 
             }
             #endregion
