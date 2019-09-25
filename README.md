@@ -1,64 +1,12 @@
 # Crystal Reports Ninja
-This is a complete rewritten based on [Crystal-Reports-Exporter](https://github.com/rainforestnet/Crystal-Reports-Exporter#crystal-reports-exporter) in order to enhance code readability and maintainability.
 
-Crystal Reports Ninja is an open source Windows Console program runs on .NET Framework 4.5.
-It loads external Crystal Report file (.rpt) and export into various file formats such as xls, pdf as well as print to printer.
+Forked from Tengyongs Crystal Reports Ninja.  https://github.com/rainforestnet/CrystalReportsNinja
 
-Since it is a console (command-line) app, it can be invoked by Task Scheduler, batch file (.bat), command line file (.cmd), as well as Web API or Web Applications.
+Crystal Reports Ninja is an open source Windows application.  The application loads and executes Crystal Report files exporting the results to a directoy or sending via email.
 
-## License
-[MIT License](https://en.wikipedia.org/wiki/MIT_License)
+The Crystal Reports Ninja application can be invoked using Windows PowerShell or Windows Command Prompt.
 
-## Directory structure
-* - Source (Source Code)
-* - Deployment
-		- 32-bit
-			Contains executable and files for 32-bit (x86) systems.
-		- 64-bit
-			Contains executable and files for 64-bit (x64) systems.
-
-## Installation
-* - Install the SAP Crystal Reports runtime engine for .Net Framwork for 32-bit and/or 64-bit version 13.0.21 or later.
-		http://www.crystalreports.com/crystal-reports-visual-studio/
-* - Copy the CrystalReportsNinja.exe files to a new or existing directory.
-
-## How to use
-Locate the folder of CrystalReportsNinja.exe and run CrystalReportsNinja -? 
-The only mandatory argument is "-F", in which is for user to specify a Crystal Reports file.
-
-### List of arguments
-
-* -F Crystal Reports filename to be loaded (i.e. "C:\Report Source\Report1.rpt") 
-* -O Crystal Reports Output filename (i.e. "C:\Reports Output\Report1.pdf" ) [Optional]
-* -E Intended file format to be exported.(i.e. pdf, doc, xls .. and etc). If you wish to print Crystal Reports to a printer, simply "-E print" instead of specifying file format.
-
-* -N  Printer Name. If printer name is not specified, it looks for default printer in the computer. If network printer, -N \\computer01\printer1
-* -C  Number of copy to be printed (any integer value i.e. 1,2,3..)
-* -S  Server Name for server where data resides. Only one server per Crystal Reports is allowed.
-* -D  Database Name. 
-* -U  Data source / server login username. Do not specify username and password for Integrated Security connection.
-* -P  Data source / server login password. Do not specify username and password for Integrated Security connection.
-* -a  Pass Crystal Reports file parameter set on run-time.
-* -l  Create a log file into CrystalReportsNinja.exe directory.
-* -lc Ouput log info to Console.
-* -M  Email Report Output.
-* -MF The From Address that should be used in the Email.
-* -MT The Address that the email should be sent to.
-* -MS The Text that should appear in the Subject Line of the Email.
-* -MZ The SMTP server address.
-
-### -F, Crystal Reports source file
-This is the only mandatory (must specify) argument, it allows your to specify the Crystal Reports filename to be exported.
-
-### -O, Crystal Reports output file
-If -O is not specified, Crystal Reports Exporter will just export the Crystal Reports into the same directory when Crystal Reports source file is resided.
-
-The filename of the exported file is the same as Crystal Report source file and ending with timestamp (yyyyMMddHHmmss).
-
-### -E, Crystal Reports Export File Type
-Use -E to specify desired file format. There are 13 file formats that you can export a Crystal Reports file.  If -E argument is not supplied, CrystalReportsNinja will look into the output file extension.  If output file is report1.pdf, it will then set to be Adobe PDF format. If file extension cannot be mapped into supported file format, CrystalReportsNinja will export your Crystal Reports into plain text file.
-
-###
+## Supported File Formats for Export
 
 <table class="table table-bordered table-condensed table-hover">
 <thead>
@@ -79,6 +27,10 @@ Use -E to specify desired file format. There are 13 file formats that you can ex
 <tr>
 <td>doc</td>
 <td>Microsoft Word </td>
+</tr>
+<tr>
+<td>xlsx</td>
+<td>Microsoft Excel </td>
 </tr>
 <tr>
 <td>xls</td>
@@ -127,6 +79,86 @@ Use -E to specify desired file format. There are 13 file formats that you can ex
 </tbody>
 </table>
 
+## Directory structure
+* Source (Source Code)
+* Deployment
+	- 32-bit
+		Contains executable and files for 32-bit (x86) systems.
+	- 64-bit
+		Contains executable and files for 64-bit (x64) systems.
+
+## PreRequisites
+* .NET Framework 4.5
+* Crystal Reports Runtime 13.0.25 (or later).
+	- If using the 64-bit Crystal Reports Ninja you must have the 64-bit Crystal Reports Runtime installed.  
+	- If using the 32-bit Crystal Reports Ninja you must have the 32-bit Crystal Reports Runtime installed.  
+	- Crystal Reports Runtime installation files can be downloaded from SAP using the following link.  http://www.crystalreports.com/crystal-reports-visual-studio/
+	- It is suggested that you uninstall any previous versions of Crystal Reports Runtime before installing the latest version.
+
+## Installation
+* Copy all the files from either the 64-bit or 32-bit Deployment directories to a new local directory.
+
+## How to use with Windows PowerShell (NEW FEATURE IN 1.4.0.0)
+
+* Start by creating a new PowerShell script.  Using the PowerShell ISE to create the script is prefered, but any text editor will do.  There are a few examples of PowerShell scripts located in the Scripts directory.
+
+* Below I have included the basic steps that need to be coded into the PowerShell script to be able to run Crystal Reports Ninja.
+	- 1 Reference the Crystal Reports Ninja executable.
+	- 2 Create a new instance of the ReportProcessor object.
+	- 3 Set appropriate arguments for desired results.  The only argument that is required to be set is the ReportPath argument.
+	- 4 Set any parameters required by the Crystal Report.
+	- 5 Use the Report Processors Run method to have Crystal Reports Ninja begin its execution.
+
+* Example 1.  Export results to Excel file using Report with Integrated Security.
+```
+[System.Reflection.Assembly]::LoadFile("C:\Program Files\CrystalReportsNinja\CrystalReportsNinja.exe")
+$ReportProcessor = New-Object CrystalReportsNinja.ReportProcessor
+$ReportProcessor.ReportArguments.EnableLogToConsole = $true
+$ReportProcessor.ReportArguments.OutputFormat = "xlsx"
+$ReportProcessor.ReportArguments.OutputPath = "c:\tmp\Test1"
+$ReportProcessor.ReportArguments.ParameterCollection.Add("@DaysToConsider:90")
+$ReportProcessor.ReportArguments.ParameterCollection.Add("@MaximumVariance:1")
+$ReportProcessor.ReportArguments.ReportPath = "C:\CrystalReports\CrystalReport1.rpt"
+$ReportProcessor.Run()
+```
+
+## How to use with Windows Command Prompt
+
+Locate the folder of CrystalReportsNinja.exe and run CrystalReportsNinja -? 
+The only mandatory argument is "-F", in which is for user to specify a Crystal Reports file.
+
+### List of arguments
+
+* -F Crystal Reports filename to be loaded (i.e. "C:\Report Source\Report1.rpt") 
+* -O Crystal Reports Output filename (i.e. "C:\Reports Output\Report1.pdf" ) [Optional]
+* -E Intended file format to be exported.(i.e. pdf, doc, xls .. and etc). If you wish to print Crystal Reports to a printer, simply "-E print" instead of specifying file format.
+
+* -N  Printer Name. If printer name is not specified, it looks for default printer in the computer. If network printer, -N \\computer01\printer1
+* -C  Number of copy to be printed (any integer value i.e. 1,2,3..)
+* -S  Server Name for server where data resides. Only one server per Crystal Reports is allowed.
+* -D  Database Name. 
+* -U  Data source / server login username. Do not specify username and password for Integrated Security connection.
+* -P  Data source / server login password. Do not specify username and password for Integrated Security connection.
+* -a  Pass Crystal Reports file parameter set on run-time.
+* -l  Create a log file into CrystalReportsNinja.exe directory.
+* -lc Ouput log info to Console.
+* -M  Email Report Output.
+* -MF The From Address that should be used in the Email.
+* -MT The Address that the email should be sent to.
+* -MS The Text that should appear in the Subject Line of the Email.
+* -MZ The SMTP server address.
+
+### -F, Crystal Reports source file
+This is the only mandatory (must specify) argument, it allows your to specify the Crystal Reports filename to be exported.
+
+### -O, Crystal Reports output file
+If -O is not specified, Crystal Reports Exporter will just export the Crystal Reports into the same directory when Crystal Reports source file is resided.
+
+The filename of the exported file is the same as Crystal Report source file and ending with timestamp (yyyyMMddHHmmss).
+
+### -E, Crystal Reports Export File Type
+Use -E to specify desired file format. There are 13 file formats that you can export a Crystal Reports file.  If -E argument is not supplied, CrystalReportsNinja will look into the output file extension.  If output file is report1.pdf, it will then set to be Adobe PDF format. If file extension cannot be mapped into supported file format, CrystalReportsNinja will export your Crystal Reports into plain text file.
+
 ### -S, Server name or Data Source name
 Most of the time, you need not specify the server name or data source name of your Crystal Reports file as every Crystal Reports file saves data source information during design time.
 
@@ -163,8 +195,6 @@ We can have as many Parameters as we want in one Crystal Reports file.
 When we refresh a report, it prompts user to input the value of parameter in runtime in order to produce the result that user wants.
 
 You can pass parameter value to CrystalReportsNinja.exe when it is executed.
-
-
 
 ###Example 1
 Let's take an example of a Crystal Reports file test.rpt located in C: root directory. The Crystal Reports file has two parameters, namely Supplier and Date Range.
@@ -216,3 +246,6 @@ c:\>CrystalReportsNinja -F report101.rpt -E print -N "HP LaserJet 1200" -C 3
 
 Email Report Example
 -F Z:\CrystalReportsNinja\CrystalReports\ConsignaStoreInventoryValue.rpt -E pdf -O Z:\CrystalReportsNinja\Output\Test.pdf -a "@CustomerId:12345" -a "@Warehouse:987" -M -MF "Report1@company.com" -MT "good_user@company.com" -MS "Testing Ninja" -MZ "mail.company.com"
+
+## License
+[MIT License](https://en.wikipedia.org/wiki/MIT_License)
