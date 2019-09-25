@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Crystal Reports Ninja")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Forked from https://github.com/rainforestnet/CrystalReportsNinja")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Tengyong Ng")]
-[assembly: AssemblyProduct("Crystal Reports Ninja")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCompany("Matthew Hertzfeld")]
+[assembly: AssemblyProduct("https://github.com/mhertzfeld/CrystalReportsNinja")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.3.0.0")]
-[assembly: AssemblyFileVersion("1.3.0.0")]
+[assembly: AssemblyVersion("1.4.0.0")]
+[assembly: AssemblyFileVersion("1.4.0.0")]

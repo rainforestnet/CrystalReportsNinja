@@ -2,7 +2,7 @@
 
 namespace CrystalReportsNinja
 {
-    class Program
+    public class Program
     {
         static int Main(string[] args)
         {
@@ -19,10 +19,10 @@ namespace CrystalReportsNinja
                     string _logFilename = string.Empty;
 
                     if (argContainer.EnableLog)
-                        _logFilename = "ninja-" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".log";
+                        argContainer.LogFileName = "ninja-" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".log";
 
-                    ReportProcessor reportNinja = new ReportProcessor(_logFilename, argContainer);
-
+                    ReportProcessor reportNinja = new ReportProcessor();
+                    reportNinja.ReportArguments = argContainer;
                     reportNinja.Run();
                 }
             }
