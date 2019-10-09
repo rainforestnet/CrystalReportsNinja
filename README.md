@@ -250,5 +250,7 @@ Email Report Example
 ## Troublshooting
 Check the ensure that the version of Ninja (64bit\32bit) you are using matches the version of the ODBC Driver (64bit\32bit) you are using.  FYI, as of Oct 2019 the Crystal Reports Developer application is still 32bit.
 
+Make sure that the option to save data in the Crystal Report is not enabled.  Users have reported issues when this option is enabled.
+
 ## License
 [MIT License](https://en.wikipedia.org/wiki/MIT_License)
