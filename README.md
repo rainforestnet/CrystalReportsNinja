@@ -247,5 +247,8 @@ c:\>CrystalReportsNinja -F report101.rpt -E print -N "HP LaserJet 1200" -C 3
 Email Report Example
 -F Z:\CrystalReportsNinja\CrystalReports\ConsignaStoreInventoryValue.rpt -E pdf -O Z:\CrystalReportsNinja\Output\Test.pdf -a "@CustomerId:12345" -a "@Warehouse:987" -M -MF "Report1@company.com" -MT "good_user@company.com" -MS "Testing Ninja" -MZ "mail.company.com"
 
+## Troublshooting
+Check the ensure that the version of Ninja (64bit\32bit) you are using matches the version of the ODBC Driver (64bit\32bit) you are using.  FYI, as of Oct 2019 the Crystal Reports Developer application is still 32bit.
+
 ## License
 [MIT License](https://en.wikipedia.org/wiki/MIT_License)
