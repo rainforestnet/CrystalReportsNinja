@@ -60,8 +60,11 @@ namespace CrystalReportsNinja
                 var paramDefs = _reportDoc.DataDefinition.ParameterFields;
                 for (int i = 0; i < paramDefs.Count; i++)
                 {
-                    ParameterValues values = paraCore.GetParameterValues(paramDefs[i]);
-                    paramDefs[i].ApplyCurrentValues(values);
+                    if (String.IsNullOrWhiteSpace(paramDefs[i].ReportName))
+                    {
+                        ParameterValues values = paraCore.GetParameterValues(paramDefs[i]);
+                        paramDefs[i].ApplyCurrentValues(values);
+                    }
                 }
             }
         }
