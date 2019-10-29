@@ -52,18 +52,17 @@ namespace CrystalReportsNinja
         /// </summary>
         private void ProcessParameters()
         {
-            var paramCount = _reportDoc.ParameterFields.Count;
-            if (paramCount > 0)
+            if (_reportDoc.DataDefinition.ParameterFields.Count > 0)
             {
                 ParameterCore paraCore = new ParameterCore(ReportArguments.LogFileName, ReportArguments);
                 paraCore.ProcessRawParameters();
-                var paramDefs = _reportDoc.DataDefinition.ParameterFields;
-                for (int i = 0; i < paramDefs.Count; i++)
+
+                foreach (ParameterFieldDefinition _ParameterFieldDefinition in _reportDoc.DataDefinition.ParameterFields)
                 {
-                    if (String.IsNullOrWhiteSpace(paramDefs[i].ReportName))
+                    if (!_ParameterFieldDefinition.IsLinked())
                     {
-                        ParameterValues values = paraCore.GetParameterValues(paramDefs[i]);
-                        paramDefs[i].ApplyCurrentValues(values);
+                        ParameterValues values = paraCore.GetParameterValues(_ParameterFieldDefinition);
+                        _ParameterFieldDefinition.ApplyCurrentValues(values);
                     }
                 }
             }
