@@ -1,7 +1,6 @@
 ﻿using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
 
@@ -13,7 +12,6 @@ namespace CrystalReportsNinja
         private string _outputFilename;
         private string _outputFormat;
         private bool _printToPrinter;
-        private string _logfilename;
 
         private ReportDocument _reportDoc;
         private LogWriter _logger;
@@ -23,14 +21,11 @@ namespace CrystalReportsNinja
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="logfilename"></param>
-        public ReportProcessor(string logfilename, ArgumentContainer _ArgumentContainer)
+        public ReportProcessor()
         {
-            _reportDoc = new ReportDocument();
-            _logfilename = logfilename;
-            _logger = new LogWriter(_logfilename, _ArgumentContainer.EnableLogToConsole);
+            ReportArguments = new ArgumentContainer();
 
-            ReportArguments = _ArgumentContainer;
+            _reportDoc = new ReportDocument();
         }
 
         /// <summary>
@@ -57,16 +52,18 @@ namespace CrystalReportsNinja
         /// </summary>
         private void ProcessParameters()
         {
-            var paramCount = _reportDoc.ParameterFields.Count;
-            if (paramCount > 0)
+            if (_reportDoc.DataDefinition.ParameterFields.Count > 0)
             {
-                ParameterCore paraCore = new ParameterCore(_logfilename, ReportArguments);
+                ParameterCore paraCore = new ParameterCore(ReportArguments.LogFileName, ReportArguments);
                 paraCore.ProcessRawParameters();
-                var paramDefs = _reportDoc.DataDefinition.ParameterFields;
-                for (int i = 0; i < paramDefs.Count; i++)
+
+                foreach (ParameterFieldDefinition _ParameterFieldDefinition in _reportDoc.DataDefinition.ParameterFields)
                 {
-                    ParameterValues values = paraCore.GetParameterValues(paramDefs[i]);
-                    paramDefs[i].ApplyCurrentValues(values);
+                    if (!_ParameterFieldDefinition.IsLinked())
+                    {
+                        ParameterValues values = paraCore.GetParameterValues(_ParameterFieldDefinition);
+                        _ParameterFieldDefinition.ApplyCurrentValues(values);
+                    }
                 }
             }
         }
@@ -315,6 +312,8 @@ namespace CrystalReportsNinja
         {
             try
             {
+                _logger = new LogWriter(ReportArguments.LogFileName, ReportArguments.EnableLogToConsole);
+
                 LoadReport();
                 ValidateOutputConfigurations();
 

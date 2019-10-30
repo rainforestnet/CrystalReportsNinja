@@ -49,6 +49,8 @@ namespace CrystalReportsNinja
         /// </summary>
         public List<string> ParameterCollection { get; set; }
 
+        public String LogFileName { get; set; }
+
         //below are action related properties
 
         /// <summary>
@@ -114,7 +116,7 @@ namespace CrystalReportsNinja
         /// Write log output to Console
         /// </summary>
         public bool EnableLogToConsole { get; set; }
-
+        
         public ArgumentContainer()
         {
             // Assigning default values
@@ -131,6 +133,7 @@ namespace CrystalReportsNinja
             EmailSubject = "Crystal Reports Ninja";
             EmailKeepFile = false;
             EnableLogToConsole = false;
+            LogFileName = String.Empty;
 
             // Collection of string to store parameters
             ParameterCollection = new List<string>();
