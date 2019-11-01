@@ -132,24 +132,34 @@ The only mandatory argument is "-F", in which is for user to specify a Crystal R
 
 ### List of arguments
 
-* -F Crystal Reports filename to be loaded (i.e. "C:\Report Source\Report1.rpt") 
-* -O Crystal Reports Output filename (i.e. "C:\Reports Output\Report1.pdf" ) [Optional]
-* -E Intended file format to be exported.(i.e. pdf, doc, xls .. and etc). If you wish to print Crystal Reports to a printer, simply "-E print" instead of specifying file format.
-
-* -N  Printer Name. If printer name is not specified, it looks for default printer in the computer. If network printer, -N \\computer01\printer1
-* -C  Number of copy to be printed (any integer value i.e. 1,2,3..)
-* -S  Server Name for server where data resides. Only one server per Crystal Reports is allowed.
-* -D  Database Name. 
-* -U  Data source / server login username. Do not specify username and password for Integrated Security connection.
-* -P  Data source / server login password. Do not specify username and password for Integrated Security connection.
-* -a  Pass Crystal Reports file parameter set on run-time.
-* -l  Create a log file into CrystalReportsNinja.exe directory.
-* -lc Ouput log info to Console.
-* -M  Email Report Output.
-* -MF The From Address that should be used in the Email.
-* -MT The Address that the email should be sent to.
-* -MS The Text that should appear in the Subject Line of the Email.
-* -MZ The SMTP server address.
+* -------------- DB and Report Config --------------");
+* -U database login username.                     (Optional, If not set IntegratedSecurity is used");
+* -P database login password.                     (Optional, If not set IntegratedSecurity is used");
+* -F Crystal reports path and filename.           (Mandatory)");
+* -S Database Server Name.                        (instance name)");
+* -D Database Name.");
+* ------------------ Output Config -----------------");
+* -O Output path and filename.");
+* -E Export file type.                            (pdf,doc,xls,xlsx,rtf,htm,rpt,txt,csv...) If print to printer simply specify \"print\"");
+* -a Parameter value.");
+* -N Printer Name.                                (Network printer : \\\\PrintServer\\Printername or Local printer : printername)");
+* -C Number of copy to be printed.");
+*   ----------------- Logging Config -----------------");
+* -L To write a log file. filename ninja-yyyyMMddHHmmss.log");
+* -LC To write log output to console");
+* ------------------ Email Config ------------------");
+* -M  Email Report Output.                        (Enable Email Support)");
+* -MF Email Address to be SENT FROM.              (Optional, Default: noreply@noreply.com)");
+* -MT Email Address to SEND to.                   (Mandatory)");
+* -MC Email Address to be CC'd.                   (Optional)");
+* -MB Email Address to be BCC'd.                  (Optional)");
+* -MS Email Subject Line of the Email.            (Optional, Default: Crystal Reports)");
+* -MZ SMTP server address.                        (Mandatory, if SSL enabled FQDN is required)");
+* -MP SMTP server port.                           (Optional, Default: 25)");
+* -ME SMTP server Enable SSL.                     (Optional, Default: False");
+* -MA SMTP Auth - Use Current User Credentials,   (Optional, Default: False ");
+* -MUN SMTP server Username.                      (Optional) \"domain\\username\"");
+* -MPW SMTP server Password.                      (Optional) \"password\"");
 
 ### -F, Crystal Reports source file
 This is the only mandatory (must specify) argument, it allows your to specify the Crystal Reports filename to be exported.

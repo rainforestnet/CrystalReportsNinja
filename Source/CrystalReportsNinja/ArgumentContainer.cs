@@ -64,7 +64,7 @@ namespace CrystalReportsNinja
         public int PrintCopy { get; set; }
         
         /// <summary>
-        /// -I Printer name
+        /// -N Printer name
         /// </summary>
         public string PrinterName { get; set; }
 
@@ -81,7 +81,17 @@ namespace CrystalReportsNinja
         /// Email address to email to.  (Mandatory for emailing report)
         /// </summary>
         public string MailTo { get; set; }
-        
+
+        /// <summary>
+        /// Email address to CC to.  (Optional for emailing report)
+        /// </summary>
+        public string MailCC { get; set; }
+
+        /// <summary>
+        /// Email address to Bcc to.  (Optional for emailing report)
+        /// </summary>
+        public string MailBcc { get; set; }
+
         /// <summary>
         /// To refresh report or not
         /// </summary>
@@ -93,7 +103,7 @@ namespace CrystalReportsNinja
         public bool EmailOutput { get; set; }
 
         /// <summary>
-        /// From Email Address.  Defaults to CrystalReportsNinja@noreply.com
+        /// From Email Address.  Defaults to noreply@noreply.com.au
         /// </summary>
         public string MailFrom { get; set; }
 
@@ -103,7 +113,32 @@ namespace CrystalReportsNinja
         public String SmtpServer { get; set; }
 
         /// <summary>
-        /// Email Subject.  Defaults to Crystal Reports Ninja
+        /// SMTP Port.  Defaults to Port 25
+        /// </summary>
+        public int SmtpPort { get; set; }
+
+        /// <summary>
+        /// SMTP Enable SSL. Defaults to False
+        /// </summary>
+        public Boolean SmtpSSL { get; set; }
+
+        /// <summary>
+        /// SMTP Use Current User Credentials. Defaults to False
+        /// </summary>
+        public Boolean SmtpAuth { get; set; }
+
+        /// <summary>
+        /// SMTP Username.
+        /// </summary>
+        public string SmtpUN { get; set; }
+
+        /// <summary>
+        /// SMTP Password.
+        /// </summary>
+        public string SmtpPW { get; set; }
+
+        /// <summary>
+        /// Email Subject.  Defaults to Crystal Reports
         /// </summary>
         public String EmailSubject { get; set; }
 
@@ -125,13 +160,24 @@ namespace CrystalReportsNinja
             PrintOutput = false;
             PrintCopy = 1;
             PrinterName = "";
-            MailTo = null;
             Refresh = true;
+
+            //Email Config
+            MailTo = null;
+            MailBcc = "NA";
+            MailCC = "NA";
             EmailOutput = false;
-            MailFrom = "CrystalReportsNinja@noreply.com";
+            MailFrom = "noreply@noreply.com";
             SmtpServer = null;
-            EmailSubject = "Crystal Reports Ninja";
+            SmtpPort = 25;
+            SmtpSSL = false;
+            SmtpAuth = false;
+            SmtpUN = null;
+            SmtpPW = null;
+            EmailSubject = "Crystal Reports";
             EmailKeepFile = false;
+
+            //Logging Options
             EnableLogToConsole = false;
             LogFileName = String.Empty;
 
@@ -142,7 +188,8 @@ namespace CrystalReportsNinja
         public void ReadArguments(string[] parameters)
         {
             if (parameters.Length == 0)
-                throw new Exception("No parameter is specified!");
+                //throw new Exception("No parameter is specified!");
+                GetHelp = true;
 
             #region Assigning crexport parameters to variables
             for (int i = 0; i < parameters.Count(); i++)
@@ -178,6 +225,8 @@ namespace CrystalReportsNinja
                         }
                         else if (parameters[i].ToUpper() == "-A")
                             ParameterCollection.Add(parameters[i + 1]);
+
+                        //Email Config
                         else if (parameters[i].ToUpper() == "-M")
                             EmailOutput = true;                        
                         else if (parameters[i].ToUpper() == "-MF")
@@ -186,9 +235,22 @@ namespace CrystalReportsNinja
                             EmailSubject = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-MT")
                             MailTo = parameters[i + 1];
+                        else if (parameters[i].ToUpper() == "-MC")
+                            MailCC = parameters[i + 1];
+                        else if (parameters[i].ToUpper() == "-MB")
+                            MailBcc = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-MZ")
                             SmtpServer = parameters[i + 1];
-
+                        else if (parameters[i].ToUpper() == "-MP")
+                            SmtpPort = Convert.ToInt32(parameters[i + 1]);
+                        else if (parameters[i].ToUpper() == "-ME")
+                            SmtpSSL = true;
+                        else if (parameters[i].ToUpper() == "-MA")
+                            SmtpAuth = true;
+                        else if (parameters[i].ToUpper() == "-MUN")
+                            SmtpUN = parameters[i + 1];
+                        else if (parameters[i].ToUpper() == "-MPW")
+                            SmtpPW = parameters[i + 1];
                     }
                 }
 

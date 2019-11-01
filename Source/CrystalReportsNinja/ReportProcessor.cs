@@ -43,8 +43,8 @@ namespace CrystalReportsNinja
                 throw new Exception("Invalid Crystal Reports file");
 
             _reportDoc.Load(_sourceFilename, OpenReportMethod.OpenReportByDefault);
-            _logger.Write(string.Format("Report loaded successfully"));
-            Console.WriteLine("Report loaded successfully");
+            var filenameOnly = System.IO.Path.GetFileNameWithoutExtension(_sourceFilename);
+            _logger.Write(string.Format("Report {0}.rpt loaded successfully", filenameOnly));
         }
 
         /// <summary>
@@ -52,18 +52,24 @@ namespace CrystalReportsNinja
         /// </summary>
         private void ProcessParameters()
         {
+            var paramCount = _reportDoc.ParameterFields.Count;
+            _logger.Write(string.Format("Number of Parameters detected in the report = {0}", _reportDoc.ParameterFields.Count));
             if (_reportDoc.DataDefinition.ParameterFields.Count > 0)
             {
                 ParameterCore paraCore = new ParameterCore(ReportArguments.LogFileName, ReportArguments);
                 paraCore.ProcessRawParameters();
-
+                _logger.Write(string.Format(""));
                 foreach (ParameterFieldDefinition _ParameterFieldDefinition in _reportDoc.DataDefinition.ParameterFields)
                 {
                     if (!_ParameterFieldDefinition.IsLinked())
-                    {
-                        ParameterValues values = paraCore.GetParameterValues(_ParameterFieldDefinition);
-                        _ParameterFieldDefinition.ApplyCurrentValues(values);
-                    }
+                        {
+                            _logger.Write(string.Format("Applied Parameter '{0}' as MultiValue '{1}'", _ParameterFieldDefinition.Name, _ParameterFieldDefinition.EnableAllowMultipleValue));
+                            ParameterValues values = paraCore.GetParameterValues(_ParameterFieldDefinition);
+                            _ParameterFieldDefinition.ApplyCurrentValues(values);
+                        }
+                    else
+                        _logger.Write(string.Format("Skipped '{1}' as MultiValue '{2}' Parameter in SubReport = '{0}' as its Linked to Main Report", _ParameterFieldDefinition.ReportName, _ParameterFieldDefinition.Name, _ParameterFieldDefinition.EnableAllowMultipleValue));
+                        _logger.Write(string.Format(""));
                 }
             }
         }
@@ -92,7 +98,7 @@ namespace CrystalReportsNinja
                 //default set to text file
                 if (!specifiedFileName && !specifiedFormat)
                     _outputFormat = "txt";
-
+                	fileExt = "txt";
                 // Use output format to set output file name extension
                 if (specifiedFormat)
                 {
@@ -102,6 +108,8 @@ namespace CrystalReportsNinja
                         fileExt = "txt";
                     else if (_outputFormat.ToUpper() == "ERTF")
                         fileExt = "rtf";
+                    else if (_outputFormat.ToUpper() == "HTM")
+                        fileExt = "html";
                     else
                         fileExt = _outputFormat;
                 }
@@ -110,17 +118,30 @@ namespace CrystalReportsNinja
                 if (specifiedFileName && !specifiedFormat)
                 {
                     int lastIndexDot = _outputFilename.LastIndexOf(".");
-                    fileExt = _outputFilename.Substring(lastIndexDot + 1, 3); //what if file ext has 4 char
+                    if (_outputFilename.Length == lastIndexDot + 4)
+                    {
+                    fileExt = _outputFilename.Substring(lastIndexDot + 1, 3);
 
                     //ensure filename extension has 3 char after the dot (.)
-                    if ((_outputFilename.Length == lastIndexDot + 4) && (fileExt.ToUpper() == "RTF" || fileExt.ToUpper() == "TXT" || fileExt.ToUpper() == "CSV" || fileExt.ToUpper() == "PDF" || fileExt.ToUpper() == "RPT" || fileExt.ToUpper() == "DOC" || fileExt.ToUpper() == "XLS" || fileExt.ToUpper() == "XML" || fileExt.ToUpper() == "HTM"))
-                        _outputFormat = _outputFilename.Substring(lastIndexDot + 1, 3);
+                        if (fileExt.ToUpper() == "RTF" || fileExt.ToUpper() == "TXT" || fileExt.ToUpper() == "CSV" || fileExt.ToUpper() == "PDF" || fileExt.ToUpper() == "RPT" || fileExt.ToUpper() == "DOC" || fileExt.ToUpper() == "XLS" || fileExt.ToUpper() == "XML" || fileExt.ToUpper() == "HTM")
+                            _outputFormat = _outputFilename.Substring(lastIndexDot + 1, 3);
+                    }
+                    else if (_outputFilename.Length == lastIndexDot + 5)
+                    {
+                        fileExt = _outputFilename.Substring(lastIndexDot + 1, 4); // Fix for file ext has 4 char
+                        if (fileExt.ToUpper() == "XLSX" || fileExt.ToUpper() == "HTML")
+                            _outputFormat = _outputFilename.Substring(lastIndexDot + 1, 4);
+                    }
                 }
-
+                // Use output file name and extension to set output format and Name if Matching criteria
                 if (specifiedFileName && specifiedFormat)
                 {
                     int lastIndexDot = _outputFilename.LastIndexOf(".");
-                    if (fileExt != _outputFilename.Substring(lastIndexDot + 1, 3)) //what if file ext has 4 char
+                    if ((_outputFilename.Length == lastIndexDot + 4) && (fileExt.ToUpper() != _outputFilename.Substring(lastIndexDot + 1, 3).ToUpper())) //file ext has 3 char
+                    {
+                        _outputFilename = string.Format("{0}.{1}", _outputFilename, fileExt);
+                    }
+                    else if ((_outputFilename.Length == lastIndexDot + 5) && (fileExt.ToUpper() != _outputFilename.Substring(lastIndexDot + 1, 4).ToUpper())) //file ext has 4 char
                     {
                         _outputFilename = string.Format("{0}.{1}", _outputFilename, fileExt);
                     }
@@ -130,7 +151,7 @@ namespace CrystalReportsNinja
                     _outputFilename = String.Format("{0}-{1}.{2}", _sourceFilename.Substring(0, _sourceFilename.LastIndexOf(".rpt")), DateTime.Now.ToString("yyyyMMddHHmmss"), fileExt);
 
                 _logger.Write(string.Format("Output Filename : {0}", _outputFilename));
-                _logger.Write(string.Format("Output format : {0}", _outputFormat));
+                _logger.Write(string.Format("Output Format : {0}", _outputFormat));
             }
         }
 
@@ -171,7 +192,7 @@ namespace CrystalReportsNinja
                     }
                     table.ApplyLogOnInfo(logonInfo);
                 }
-                Console.WriteLine("Database Login done");
+                _logger.Write(string.Format("Logged into {1} Database on {0} successfully with User id: {2}", server, database, username));
             }
         }
 
@@ -187,11 +208,12 @@ namespace CrystalReportsNinja
                 if (printerName.Length > 0)
                 {
                     _reportDoc.PrintOptions.PrinterName = printerName;
+                    _logger.Write(string.Format("Specified PrinterName '{0}' will be used", printerName));
                 }
                 else
                 {
                     System.Drawing.Printing.PrinterSettings prinSet = new System.Drawing.Printing.PrinterSettings();
-
+                    _logger.Write(string.Format("Printer not specified - Windows Default Printer '{0}' will be used", prinSet.PrinterName));
                     if (prinSet.PrinterName.Trim().Length > 0)
                         _reportDoc.PrintOptions.PrinterName = prinSet.PrinterName;
                     else
@@ -242,7 +264,18 @@ namespace CrystalReportsNinja
                     htmlFormatOptions.HTMLEnableSeparatedPages = false;
                     htmlFormatOptions.HTMLHasPageNavigator = true;
                     htmlFormatOptions.FirstPageNumber = 1;
-
+                    _reportDoc.ExportOptions.ExportFormatType = ExportFormatType.HTML40;
+                    _reportDoc.ExportOptions.FormatOptions = htmlFormatOptions;
+                }
+                else if (_outputFormat.ToUpper() == "HTML")
+                {
+                    HTMLFormatOptions htmlFormatOptions = new HTMLFormatOptions();
+                    if (_outputFilename.LastIndexOf("\\") > 0) //if absolute output path is specified
+                        htmlFormatOptions.HTMLBaseFolderName = _outputFilename.Substring(0, _outputFilename.LastIndexOf("\\"));
+                    htmlFormatOptions.HTMLFileName = _outputFilename;
+                    htmlFormatOptions.HTMLEnableSeparatedPages = false;
+                    htmlFormatOptions.HTMLHasPageNavigator = true;
+                    htmlFormatOptions.FirstPageNumber = 1;
                     _reportDoc.ExportOptions.ExportFormatType = ExportFormatType.HTML40;
                     _reportDoc.ExportOptions.FormatOptions = htmlFormatOptions;
                 }
@@ -270,7 +303,7 @@ namespace CrystalReportsNinja
             {
                 var copy = ReportArguments.PrintCopy;
                 _reportDoc.PrintToPrinter(copy, true, 0, 0);
-                _logger.Write(string.Format("Report printed to : {0}", _reportDoc.PrintOptions.PrinterName));
+                _logger.Write(string.Format("Report printed to : {0} - {1} Copies", _reportDoc.PrintOptions.PrinterName,copy));
             }
             else
             {
@@ -291,11 +324,34 @@ namespace CrystalReportsNinja
                         _MailMessage.From = new MailAddress(ReportArguments.MailFrom);
                         _MailMessage.Subject = ReportArguments.EmailSubject;
                         _MailMessage.To.Add(ReportArguments.MailTo);
-
+                        if (ReportArguments.MailCC != "NA")
+                        {
+                            _MailMessage.CC.Add(ReportArguments.MailCC);
+                        }
+                        if (ReportArguments.MailBcc != "NA")
+                        {
+                            _MailMessage.Bcc.Add(ReportArguments.MailBcc);
+                        }
                         SmtpClient smtpClient = new SmtpClient();
                         smtpClient.Host = ReportArguments.SmtpServer;
-                        smtpClient.UseDefaultCredentials = true;
+                        smtpClient.Port = ReportArguments.SmtpPort;
+                        smtpClient.EnableSsl = ReportArguments.SmtpSSL;
+
+                        if (ReportArguments.SmtpUN != null && ReportArguments.SmtpPW != null)
+                        {
+                                //Uses Specified credentials to send email
+                                smtpClient.UseDefaultCredentials = true;
+                                System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(ReportArguments.SmtpUN, ReportArguments.SmtpPW);
+                                smtpClient.Credentials = credentials;
+                            }
+                        else
+                            {
+                                //If Set - uses the currently logged in user credentials to send email otherwise sent using Anonymous
+                                smtpClient.UseDefaultCredentials = ReportArguments.SmtpAuth;
+                            }
                         smtpClient.Send(_MailMessage);
+                        _logger.Write(string.Format("Report {0} Emailed to : {1} CC'd to: {2} BCC'd to: {3}", _outputFilename, ReportArguments.MailTo, ReportArguments.MailCC, ReportArguments.MailBcc));
+                        _logger.Write(string.Format("SMTP Details: Server:{0}, Port:{1}, SSL:{2} Auth:{3}, UN:{4}", smtpClient.Host, smtpClient.Port, smtpClient.EnableSsl, smtpClient.UseDefaultCredentials, ReportArguments.SmtpUN));
                     }
 
                     if (!ReportArguments.EmailKeepFile)
@@ -313,23 +369,33 @@ namespace CrystalReportsNinja
             try
             {
                 _logger = new LogWriter(ReportArguments.LogFileName, ReportArguments.EnableLogToConsole);
-
+                _logger.Write(string.Format(""));
+                _logger.Write(string.Format("================== LoadReport, Output File and DB logion ==========="));
                 LoadReport();
                 ValidateOutputConfigurations();
 
                 PerformDBLogin();
                 ApplyReportOutput();
+                _logger.Write(string.Format(""));
+                _logger.Write(string.Format("================== ProcessParameters ==============================="));
                 ProcessParameters();
 
                 PerformRefresh();
+                _logger.Write(string.Format(""));
+                _logger.Write(string.Format("================== STEP = PerformOutput ============================"));
                 PerformOutput();
             }
             catch (Exception ex)
             {
-                _logger.Write(string.Format("Exception: {0}", ex.Message));
-                _logger.Write(string.Format("Inner Exception: {0}", ex.InnerException));
-
-                throw ex;
+                _logger.Write(string.Format(""));
+                _logger.Write(string.Format("===================Logs and Errors ================================="));
+                _logger.Write(string.Format("Message: {0}", ex.Message));
+                _logger.Write(string.Format("HResult: {0}", ex.HResult));
+                _logger.Write(string.Format("Data: {0}", ex.Data));
+				_logger.Write(string.Format("Inner Exception: {0}", ex.InnerException));
+                _logger.Write(string.Format("StackTrace: {0}", ex.StackTrace));
+                _logger.Write(string.Format("===================================================================="));
+                throw;
             }
             finally
             {

@@ -31,9 +31,11 @@ namespace CrystalReportsNinja
                 _userParams.Add(new UserParameter
                 {
                     ParameterName = input.Substring(0, input.IndexOf(":")).Trim(),
-                    ParameterValue = (input.Substring(input.IndexOf(":") + 1, input.Length - (input.IndexOf(":") + 1))),
-                });
+                    ParameterValue = (input.Substring(input.IndexOf(":") + 1, input.Length - (input.IndexOf(":") + 1)))
+                }
+                );
             }
+            _logger.Write(string.Format("Number of Parameters passed by the users script = {0}", _userParams.Count));
         }
 
         /// <summary>
@@ -60,6 +62,7 @@ namespace CrystalReportsNinja
                         {
                             ParameterValue paramValue = GetSingleParamValue(ParameterDef.DiscreteOrRangeKind, values[k], ParameterDef.Name);
                             paramValues.Add(paramValue);
+                            _logger.Write(string.Format("Multiple Value Parameter - Prompt = {0} - {1} = {2}", ParameterDef.PromptText, ParameterDef.Name, _userParams[j].ParameterValue));
                         }
                     }
                     else
@@ -67,6 +70,7 @@ namespace CrystalReportsNinja
                         // simple single value parameter
                         ParameterValue paramValue = GetSingleParamValue(ParameterDef.DiscreteOrRangeKind, _userParams[j].ParameterValue, ParameterDef.Name);
                         paramValues.Add(paramValue);
+                        _logger.Write(string.Format("Single Value Parameter - Prompt = {0} - {1} = {2}", ParameterDef.PromptText, _userParams[j].ParameterName, _userParams[j].ParameterValue));
                     }
 
                 }
