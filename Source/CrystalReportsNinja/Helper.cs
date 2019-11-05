@@ -35,23 +35,26 @@ namespace CrystalReportsNinja
             Console.WriteLine("     -LC To write log output to console");
             Console.WriteLine("\n     ------------------ Email Config ------------------");
             Console.WriteLine("     -M  Email Report Output.                        (Enable Email Support)");
-            Console.WriteLine("     -MF Email Address to be SENT FROM.              (Optional, Default: noreply@noreply.com)");
-            Console.WriteLine("     -MT Email Address to SEND to.                   (Mandatory)");
+            Console.WriteLine("     -MF Email Address to SEND From.                 (Optional, Default: noreply@noreply.com)");
+            Console.WriteLine("     -MN Email Address to SEND From Display Name.    (Optional, Default: Crystal Reports)"); 
+            Console.WriteLine("     -MT Email Address to SEND To.                   (Mandatory)");
             Console.WriteLine("     -MC Email Address to be CC'd.                   (Optional)");
             Console.WriteLine("     -MB Email Address to be BCC'd.                  (Optional)");
             Console.WriteLine("     -MS Email Subject Line of the Email.            (Optional, Default: Crystal Reports)");
-            Console.WriteLine("     -MZ SMTP server address.                        (Mandatory, if SSL enabled FQDN is required)");
-            Console.WriteLine("     -MP SMTP server port.                           (Optional, Default: 25)");
-            Console.WriteLine("     -ME SMTP server Enable SSL.                     (Optional, Default: False");
-            Console.WriteLine("     -MA SMTP Auth - Use Current User Credentials,   (Optional, Default: False ");
-            Console.WriteLine("     ----- Auth Note: If Username and Password is provided, -MA Param is ignored and specifed Credentials are used to send email -----");
-            Console.WriteLine("     ----- Auth Note: If -MA + -MU + -MP Params are not set, Email is sent using Anonymous User -----");
-            Console.WriteLine("     ----- Auth Note: If -MA is set and -MU + -MP are not, Email is sent using Current User Credentials -----");
+            Console.WriteLine("     -MI Email Message Body.                         (Optional, Default: Blank)");
+            Console.WriteLine("     -MK Email Keep Output File after sending.       (Optional, Default: False)");
+            Console.WriteLine("     -MSA SMTP server address.                       (Mandatory, if SSL enabled FQDN is required)");
+            Console.WriteLine("     -MSP SMTP server port.                          (Optional, Default: 25)");
+            Console.WriteLine("     -MSE SMTP server Enable SSL.                    (Optional, Default: False");
+            Console.WriteLine("     -MSC SMTP Auth - Use Current User Credentials,  (Optional, Default: False ");
             Console.WriteLine("     -MUN SMTP server Username.                      (Optional) \"domain\\username\"");
             Console.WriteLine("     -MPW SMTP server Password.                      (Optional) \"password\"");
+            Console.WriteLine("     ----- SMTP Auth Note: If Username and Password is provided, -MSC Param is ignored and specifed Credentials are used to send email -----");
+            Console.WriteLine("     ----- SMTP Auth Note: If -MSC + -MUN + -MPW Params are not set, Email is sent using Anonymous User -----");
+            Console.WriteLine("     ----- SMTP Auth Note: If -MSC is set and -MUN + -MPW are not, Email is sent using Current User Credentials -----");
             Console.WriteLine("\n     ----------------- Example Scripts ----------------");
             Console.WriteLine("     Example: C:\\> CrystalReportsNinja -U user1 -P mypass -S Server01 -D \"ExtremeDB\" -F c:\\test.rpt -O d:\\test.pdf -a \"Supplier Name:Active Outdoors\" -a \"Date Range:(12-01-2001,12-04-2002)\"");
-            Console.WriteLine("     Example Email : Add this to the above line, -M -MZ SMTP-FQDN -MP 25 -MS -MUN \"smtpUN\" -MPW \"smtpPW\" -ME  \"Report Subject\" -MF noreply@noreply.com.au -MT myemail@domain.com");
+            Console.WriteLine("     Example Email : Add this to the above line, -M -MSA SMTP-FQDN -MSP 25 -MUN \"smtpUN\" -MPW \"smtpPW\" -MN \"Report User\" -MF noreply@noreply.com.au -MS \"Report Subject\" -MI \"Report Body\" -MN \"Report User\" -MF noreply@noreply.com.au -MT myemail@domain.com");
             Console.WriteLine("\n     Learn more in http://www.rainforestnet.com/crystal-reports-exporter/");
             
         }
