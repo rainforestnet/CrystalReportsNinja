@@ -321,8 +321,12 @@ namespace CrystalReportsNinja
                     using (MailMessage _MailMessage = new MailMessage())
                     {
                         _MailMessage.Attachments.Add(new Attachment(_outputFilename));
-                        _MailMessage.From = new MailAddress(ReportArguments.MailFrom);
+                        _MailMessage.From = new MailAddress(ReportArguments.MailFrom, ReportArguments.MailFromName);
                         _MailMessage.Subject = ReportArguments.EmailSubject;
+                        if (ReportArguments.EmailBody != "NA")
+                        {
+                            _MailMessage.Body = ReportArguments.EmailBody;
+                        }
                         _MailMessage.To.Add(ReportArguments.MailTo);
                         if (ReportArguments.MailCC != "NA")
                         {

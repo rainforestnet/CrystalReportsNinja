@@ -49,10 +49,6 @@ namespace CrystalReportsNinja
         /// </summary>
         public List<string> ParameterCollection { get; set; }
 
-        public String LogFileName { get; set; }
-
-        //below are action related properties
-
         /// <summary>
         /// To print or to export as file. true - print, false
         /// </summary>
@@ -71,87 +67,101 @@ namespace CrystalReportsNinja
         /// To display Help message
         /// </summary>
         public bool GetHelp { get; set; }
-        
-        /// <summary>
-        /// To produce log file
-        /// </summary>
-        public bool EnableLog { get; set; }
-        
-        /// <summary>
-        /// Email address to email to.  (Mandatory for emailing report)
-        /// </summary>
-        public string MailTo { get; set; }
 
         /// <summary>
-        /// Email address to CC to.  (Optional for emailing report)
-        /// </summary>
-        public string MailCC { get; set; }
-
-        /// <summary>
-        /// Email address to Bcc to.  (Optional for emailing report)
-        /// </summary>
-        public string MailBcc { get; set; }
-
-        /// <summary>
-        /// To refresh report or not
-        /// </summary>
-        public bool Refresh { get; set; }
-
-        /// <summary>
-        /// To refresh report or not
+        /// -M To Email out the report or not
         /// </summary>
         public bool EmailOutput { get; set; }
 
         /// <summary>
-        /// From Email Address.  Defaults to noreply@noreply.com.au
+        /// -MF From Email Address.  Defaults to noreply@noreply.com.au
         /// </summary>
         public string MailFrom { get; set; }
 
         /// <summary>
-        /// SMTP Address.  (Mandatory for emailing report)
+        /// -MN From Email Address.  Defaults to Crystal Reports
+        /// </summary>
+        public string MailFromName { get; set; }
+        /// <summary>
+        /// -MT Email address to email to.  (Mandatory for emailing report)
+        /// </summary>
+        public string MailTo { get; set; }
+
+        /// <summary>
+        /// -MC Email address to CC to.  (Optional for emailing report)
+        /// </summary>
+        public string MailCC { get; set; }
+
+        /// <summary>
+        /// -MB Email address to Bcc to.  (Optional for emailing report)
+        /// </summary>
+        public string MailBcc { get; set; }
+
+        /// <summary>
+        /// -MSA SMTP Address.  (Mandatory for emailing report)
         /// </summary>
         public String SmtpServer { get; set; }
 
         /// <summary>
-        /// SMTP Port.  Defaults to Port 25
+        /// -MSP SMTP Port.  Defaults to Port 25
         /// </summary>
         public int SmtpPort { get; set; }
 
         /// <summary>
-        /// SMTP Enable SSL. Defaults to False
+        /// -MSE SMTP Enable SSL. Defaults to False
         /// </summary>
         public Boolean SmtpSSL { get; set; }
 
         /// <summary>
-        /// SMTP Use Current User Credentials. Defaults to False
+        /// -MSC SMTP Use Current User Credentials. Defaults to False
         /// </summary>
         public Boolean SmtpAuth { get; set; }
 
         /// <summary>
-        /// SMTP Username.
+        /// -MSU SMTP Username.
         /// </summary>
         public string SmtpUN { get; set; }
 
         /// <summary>
-        /// SMTP Password.
+        /// -MSP SMTP Password.
         /// </summary>
         public string SmtpPW { get; set; }
 
         /// <summary>
-        /// Email Subject.  Defaults to Crystal Reports
+        /// -MS Email Subject.  Defaults to Crystal Reports
         /// </summary>
         public String EmailSubject { get; set; }
 
         /// <summary>
-        /// Email Delete File.  Defaults to false
+        /// -MI Email Body.
+        /// </summary>
+        public String EmailBody { get; set; }
+
+        /// <summary>
+        /// -MK Email Keep File.  Defaults to false
         /// </summary>
         public Boolean EmailKeepFile { get; set; }
 
         /// <summary>
-        /// Write log output to Console
+        /// -L To produce log file
+        /// </summary>
+        public bool EnableLog { get; set; }
+
+        /// <summary>
+        /// -LC Write log output to Console
         /// </summary>
         public bool EnableLogToConsole { get; set; }
-        
+
+        /// <summary>
+        /// Log File Name
+        /// </summary>
+        public String LogFileName { get; set; }
+
+        /// <summary>
+        /// -NR To refresh report or not
+        /// </summary>
+        public bool Refresh { get; set; }
+
         public ArgumentContainer()
         {
             // Assigning default values
@@ -168,6 +178,7 @@ namespace CrystalReportsNinja
             MailCC = "NA";
             EmailOutput = false;
             MailFrom = "noreply@noreply.com";
+            MailFromName = "Crystal Reports";
             SmtpServer = null;
             SmtpPort = 25;
             SmtpSSL = false;
@@ -175,6 +186,7 @@ namespace CrystalReportsNinja
             SmtpUN = null;
             SmtpPW = null;
             EmailSubject = "Crystal Reports";
+            EmailBody = "NA";
             EmailKeepFile = false;
 
             //Logging Options
@@ -231,21 +243,27 @@ namespace CrystalReportsNinja
                             EmailOutput = true;                        
                         else if (parameters[i].ToUpper() == "-MF")
                             MailFrom = parameters[i + 1];
+                        else if (parameters[i].ToUpper() == "-MN")
+                            MailFromName = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-MS")
                             EmailSubject = parameters[i + 1];
+                        else if (parameters[i].ToUpper() == "-MI")
+                            EmailBody = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-MT")
                             MailTo = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-MC")
                             MailCC = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-MB")
                             MailBcc = parameters[i + 1];
-                        else if (parameters[i].ToUpper() == "-MZ")
+                        else if (parameters[i].ToUpper() == "-MK")
+                            EmailKeepFile = true;
+                        else if (parameters[i].ToUpper() == "-MSA")
                             SmtpServer = parameters[i + 1];
-                        else if (parameters[i].ToUpper() == "-MP")
+                        else if (parameters[i].ToUpper() == "-MSP")
                             SmtpPort = Convert.ToInt32(parameters[i + 1]);
-                        else if (parameters[i].ToUpper() == "-ME")
+                        else if (parameters[i].ToUpper() == "-MSE")
                             SmtpSSL = true;
-                        else if (parameters[i].ToUpper() == "-MA")
+                        else if (parameters[i].ToUpper() == "-MSC")
                             SmtpAuth = true;
                         else if (parameters[i].ToUpper() == "-MUN")
                             SmtpUN = parameters[i + 1];
