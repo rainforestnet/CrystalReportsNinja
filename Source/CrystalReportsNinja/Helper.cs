@@ -28,7 +28,7 @@ namespace CrystalReportsNinja
             Console.WriteLine("     -O Output path and filename.");
             Console.WriteLine("     -E Export file type.                            (pdf,doc,xls,xlsx,rtf,htm,rpt,txt,csv...) If print to printer simply specify \"print\"");
             Console.WriteLine("     -a Parameter value.");
-            Console.WriteLine("     -N Printer Name.                                (Network printer : \\\\PrintServer\\Printername or Local printer : printername)");
+            Console.WriteLine("     -N Printer Name.                                (Set to DFLT to use inbuilt report printer, If not set the Windows Default Printer will be used, Network printer : \\\\PrintServer\\Printername or Local printer : printername)");
             Console.WriteLine("     -C Number of copy to be printed.");
             Console.WriteLine("\n     ----------------- Logging Config -----------------");
             Console.WriteLine("     -L To write a log file. filename ninja-yyyyMMddHHmmss.log");
