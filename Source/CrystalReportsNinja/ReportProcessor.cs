@@ -204,18 +204,30 @@ namespace CrystalReportsNinja
             if (_printToPrinter)
             {
                 var printerName = ReportArguments.PrinterName != null ? ReportArguments.PrinterName.Trim() : "";
-
-                if (printerName.Length > 0)
+                _logger.Write(string.Format("The default printer set in the Report is '{0}'", _reportDoc.PrintOptions.PrinterName));
+                if (printerName.Length > 0 && printerName.ToUpper() != "DFLT")
+                //Print to the Specified Printer
                 {
+                    _reportDoc.PrintOptions.NoPrinter = false; //Changes the report option "No Printer: Optimized for Screen"
                     _reportDoc.PrintOptions.PrinterName = printerName;
-                    _logger.Write(string.Format("Specified PrinterName '{0}' will be used", printerName));
+                    _logger.Write(string.Format("The Specified PrinterName '{0}' is set by Parameter will be used", printerName));
+                }
+                else if (_reportDoc.PrintOptions.PrinterName.Length > 0 && printerName.ToUpper() == "DFLT")
+                //Print to the reports default Printer
+                {
+                    _reportDoc.PrintOptions.NoPrinter = false; //Changes the report option "No Printer: Optimized for Screen"
+                    _logger.Write(string.Format("The Specified PrinterName '{0}' is set in the report and DFLT flag will be used", _reportDoc.PrintOptions.PrinterName));
                 }
                 else
+                //Print to the Windows default Printer
                 {
                     System.Drawing.Printing.PrinterSettings prinSet = new System.Drawing.Printing.PrinterSettings();
-                    _logger.Write(string.Format("Printer not specified - Windows Default Printer '{0}' will be used", prinSet.PrinterName));
-                    if (prinSet.PrinterName.Trim().Length > 0)
-                        _reportDoc.PrintOptions.PrinterName = prinSet.PrinterName;
+                    _logger.Write(string.Format("Printer is not specified - The Windows Default Printer '{0}' will be used", prinSet.PrinterName));
+                        if (prinSet.PrinterName.Trim().Length > 0)
+                        {
+                            _reportDoc.PrintOptions.NoPrinter = false; //Changes the report option "No Printer: Optimized for Screen"
+                            _reportDoc.PrintOptions.PrinterName = prinSet.PrinterName;
+                        }
                     else
                         throw new Exception("No printer name is specified");
                 }
