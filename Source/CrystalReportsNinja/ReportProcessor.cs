@@ -241,7 +241,18 @@ namespace CrystalReportsNinja
                 else if (_outputFormat.ToUpper() == "TAB")
                     _reportDoc.ExportOptions.ExportFormatType = ExportFormatType.TabSeperatedText;
                 else if (_outputFormat.ToUpper() == "CSV")
+                {
+                    CharacterSeparatedValuesFormatOptions csvExpOpts = new CharacterSeparatedValuesFormatOptions();
+                    csvExpOpts.ExportMode = CsvExportMode.Standard;
+                    csvExpOpts.GroupSectionsOption = CsvExportSectionsOption.Export;
+                    csvExpOpts.ReportSectionsOption = CsvExportSectionsOption.Export;
+                    csvExpOpts.GroupSectionsOption = CsvExportSectionsOption.ExportIsolated;
+                    csvExpOpts.ReportSectionsOption = CsvExportSectionsOption.ExportIsolated;
+                    csvExpOpts.SeparatorText = ",";
+                    csvExpOpts.Delimiter = "\"";
                     _reportDoc.ExportOptions.ExportFormatType = ExportFormatType.CharacterSeparatedValues;
+                    _reportDoc.ExportOptions.FormatOptions = csvExpOpts;
+                }
                 else if (_outputFormat.ToUpper() == "PDF")
                 {
                     _reportDoc.ExportOptions.ExportFormatType = ExportFormatType.PortableDocFormat;
@@ -265,25 +276,13 @@ namespace CrystalReportsNinja
                     _reportDoc.ExportOptions.ExportFormatType = ExportFormatType.EditableRTF;
                 else if (_outputFormat.ToUpper() == "XML")
                     _reportDoc.ExportOptions.ExportFormatType = ExportFormatType.Xml;
-                else if (_outputFormat.ToUpper() == "HTM")
+                else if (_outputFormat.ToUpper() == "HTM" || _outputFormat.ToUpper() == "HTML")
                 {
                     HTMLFormatOptions htmlFormatOptions = new HTMLFormatOptions();
 
                     if (_outputFilename.LastIndexOf("\\") > 0) //if absolute output path is specified
                         htmlFormatOptions.HTMLBaseFolderName = _outputFilename.Substring(0, _outputFilename.LastIndexOf("\\"));
 
-                    htmlFormatOptions.HTMLFileName = _outputFilename;
-                    htmlFormatOptions.HTMLEnableSeparatedPages = false;
-                    htmlFormatOptions.HTMLHasPageNavigator = true;
-                    htmlFormatOptions.FirstPageNumber = 1;
-                    _reportDoc.ExportOptions.ExportFormatType = ExportFormatType.HTML40;
-                    _reportDoc.ExportOptions.FormatOptions = htmlFormatOptions;
-                }
-                else if (_outputFormat.ToUpper() == "HTML")
-                {
-                    HTMLFormatOptions htmlFormatOptions = new HTMLFormatOptions();
-                    if (_outputFilename.LastIndexOf("\\") > 0) //if absolute output path is specified
-                        htmlFormatOptions.HTMLBaseFolderName = _outputFilename.Substring(0, _outputFilename.LastIndexOf("\\"));
                     htmlFormatOptions.HTMLFileName = _outputFilename;
                     htmlFormatOptions.HTMLEnableSeparatedPages = false;
                     htmlFormatOptions.HTMLHasPageNavigator = true;
