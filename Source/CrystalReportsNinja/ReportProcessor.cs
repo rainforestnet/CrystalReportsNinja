@@ -84,6 +84,8 @@ namespace CrystalReportsNinja
             bool specifiedFileName = _outputFilename != null ? true : false;
             bool specifiedFormat = _outputFormat != null ? true : false;
 
+            if (_outputFormat.ToUpper() == "PRINT") _printToPrinter = true;
+            
             if (!_printToPrinter)
             {
                 string fileExt = "";
