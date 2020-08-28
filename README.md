@@ -79,13 +79,6 @@ The Crystal Reports Ninja application can be invoked using Windows PowerShell or
 </tbody>
 </table>
 
-## Directory structure
-* Source (Source Code)
-* Deployment
-	- 32-bit
-		Contains executable and files for 32-bit (x86) systems.
-	- 64-bit
-		Contains executable and files for 64-bit (x64) systems.
 
 ## PreRequisites
 * .NET Framework 4.5
