@@ -253,10 +253,12 @@ c:\>CrystalReportsNinja -F report101.rpt -E print -N "HP LaserJet 1200" -C 3
 Email Report Example
 -F Z:\CrystalReportsNinja\CrystalReports\ConsignaStoreInventoryValue.rpt -E pdf -O Z:\CrystalReportsNinja\Output\Test.pdf -a "@CustomerId:12345" -a "@Warehouse:987" -M -MF "Report1@company.com" -MT "good_user@company.com" -MS "Testing Ninja" -MZ "mail.company.com"
 
-## Troublshooting
+## Troubleshooting Ninja
 Check the ensure that the version of Ninja (64bit\32bit) you are using matches the version of the ODBC Driver (64bit\32bit) you are using.  FYI, as of Oct 2019 the Crystal Reports Developer application is still 32bit.
 
 Make sure that the option to save data in the Crystal Report is not enabled.  Users have reported issues when this option is enabled.
+
+I had an issue with SQLs written by Crystal Reports working in Developer but not in Ninja.  The problem had to do with fully qualified table names.  To solve the problem I switched out the SQL Crystal had written and replaced it with a stored procedure which fixed the problem for me.  There are other solutions to this problem.  This webpage helped when I was searching for solutions to the problem.  https://wisdomofsolomon.wordpress.com/2011/06/18/crystal-reports-tables-not-found-during-verify-database/
 
 ## License
 [MIT License](https://en.wikipedia.org/wiki/MIT_License)
