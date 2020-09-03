@@ -162,6 +162,11 @@ namespace CrystalReportsNinja
         /// </summary>
         public bool Refresh { get; set; }
 
+        /// <summary>
+        /// -SF Report Selection Formula
+        /// </summary>
+        public string SelectionFormula { get; set; }
+
         public ArgumentContainer()
         {
             // Assigning default values
@@ -269,6 +274,8 @@ namespace CrystalReportsNinja
                             SmtpUN = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-MPW")
                             SmtpPW = parameters[i + 1];
+                        else if (parameters[i].ToUpper() == "-SF")
+                            SelectionFormula = parameters[i + 1];
                     }
                 }
 

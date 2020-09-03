@@ -75,6 +75,17 @@ namespace CrystalReportsNinja
         }
 
         /// <summary>
+        /// Add selection formula to ReportDocument
+        /// </summary>
+        private void ProcessSelectionFormula()
+        {
+            if (!String.IsNullOrWhiteSpace(ReportArguments.SelectionFormula))
+            {
+                _reportDoc.RecordSelectionFormula = ReportArguments.SelectionFormula;
+            }
+        }
+
+        /// <summary>
         /// Validate configurations related to program output.
         /// </summary>
         /// <remarks>
@@ -394,6 +405,7 @@ namespace CrystalReportsNinja
                 _logger.Write(string.Format(""));
                 _logger.Write(string.Format("================== ProcessParameters ==============================="));
                 ProcessParameters();
+                ProcessSelectionFormula();
 
                 PerformRefresh();
                 _logger.Write(string.Format(""));
