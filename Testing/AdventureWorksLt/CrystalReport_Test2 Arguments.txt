@@ -1,0 +1,1 @@
+-u myuser -p mypassword -s mydb.database.windows.net -d AdventureWorksLT -f CrystalReport_Test2.rpt -o test2.pdf -a "@Size:L"

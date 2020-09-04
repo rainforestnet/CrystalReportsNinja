@@ -191,7 +191,7 @@ Network printer : \\\\PrintServer\\Printername or Local printer : printername.
 Number of copies to print to printer.
 
 ### -A Passing in Parameters of Crystal Reports
-Parameters within the Crystal Report that you would like to pass a value to.
+Parameters within the Crystal Report that you would like to pass a value to.  Case must match.
 
 ### -L Write Log File
 filename ninja-yyyyMMddHHmmss.log
