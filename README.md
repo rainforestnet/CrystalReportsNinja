@@ -125,45 +125,39 @@ The only mandatory argument is "-F", in which is for user to specify a Crystal R
 
 ### List of arguments
 
-* -------------- DB and Report Config --------------");
-* -U database login username.                     (Optional, If not set IntegratedSecurity is used");
-* -P database login password.                     (Optional, If not set IntegratedSecurity is used");
-* -F Crystal reports path and filename.           (Mandatory)");
-* -S Database Server Name.                        (instance name)");
-* -D Database Name.");
-* ------------------ Output Config -----------------");
-* -O Output path and filename.");
-* -E Export file type.                            (pdf,doc,xls,xlsx,rtf,htm,rpt,txt,csv...) If print to printer simply specify \"print\"");
-* -a Parameter value.");
-* -N Printer Name.                                (Network printer : \\\\PrintServer\\Printername or Local printer : printername)");
-* -C Number of copy to be printed.");
-*   ----------------- Logging Config -----------------");
-* -L To write a log file. filename ninja-yyyyMMddHHmmss.log");
-* -LC To write log output to console");
-* ------------------ Email Config ------------------");
-* -M  Email Report Output.                        (Enable Email Support)");
-* -MF Email Address to be SENT FROM.              (Optional, Default: noreply@noreply.com)");
-* -MT Email Address to SEND to.                   (Mandatory)");
-* -MC Email Address to be CC'd.                   (Optional)");
-* -MB Email Address to be BCC'd.                  (Optional)");
-* -MS Email Subject Line of the Email.            (Optional, Default: Crystal Reports)");
-* -MZ SMTP server address.                        (Mandatory, if SSL enabled FQDN is required)");
-* -MP SMTP server port.                           (Optional, Default: 25)");
-* -ME SMTP server Enable SSL.                     (Optional, Default: False");
-* -MA SMTP Auth - Use Current User Credentials,   (Optional, Default: False ");
-* -MUN SMTP server Username.                      (Optional) \"domain\\username\"");
-* -MPW SMTP server Password.                      (Optional) \"password\"");
+* ----------- Report and Database Config -----------;
+* -F Crystal Reports Path and Filename.           (Mandatory);
+* -S Database Server Name.                        (Optional if using Database Server set within the Crystal Report);
+* -D Database Name.                               (Optional if using Database Server set within the Crystal Report);
+* -U Database User Account.                       (Optional, If not set IntegratedSecurity is used);
+* -P Database User Account Password.              (Optional, If not set IntegratedSecurity is used);
+* ------------------ Output Config -----------------;
+* -E Export Type.                                 (pdf,doc,xls,xlsx,rtf,htm,rpt,txt,csv,print);
+* -O Output Path and Filename.                    (Not needed when printed);
+* -N Printer Name.                                (Required when Printing);
+* -C Number of copies to be printed.              (Optional, Default: 1);
+* ------------- Parameters and Formulas -------------;
+* -A Parameter value.;                            (Optional);
+* -SF Crystal Reports Selection Forumula          (Optional);
+*   ----------------- Logging Config -----------------;
+* -L Write a log file.                            (Optional);
+* -LC Write log output to console;                (Optional);
+* ------------------ Email Config ------------------;
+* -M  Email Report Output.                        (Enable Email Support);
+* -MF Email Address to be SENT FROM.              (Optional, Default: noreply@noreply.com);
+* -MT Email Address to SEND to.                   (Mandatory);
+* -MC Email Address to be CC'd.                   (Optional);
+* -MB Email Address to be BCC'd.                  (Optional);
+* -MS Email Subject Line of the Email.            (Optional, Default: Crystal Reports);
+* -MZ SMTP server address.                        (Mandatory, if SSL enabled FQDN is required);
+* -MP SMTP server port.                           (Optional, Default: 25);
+* -ME SMTP server Enable SSL.                     (Optional, Default: False);
+* -MA SMTP Auth - Use Current User Credentials,   (Optional, Default: False );
+* -MUN SMTP server Username.                      (Optional) \"domain\\username\";
+* -MPW SMTP server Password.                      (Optional) \"password\";
 
 ### -F, Crystal Reports source file
 This is the only mandatory (must specify) argument, it allows your to specify the Crystal Reports filename to be exported.
-
-### -O, Crystal Reports output file
-If -O is not specified, Crystal Reports Exporter will just export the Crystal Reports into the same directory when Crystal Reports source file is resided.
-
-The filename of the exported file is the same as Crystal Report source file and ending with timestamp (yyyyMMddHHmmss).
-
-### -E, Crystal Reports Export File Type
-Use -E to specify desired file format. There are 13 file formats that you can export a Crystal Reports file.  If -E argument is not supplied, CrystalReportsNinja will look into the output file extension.  If output file is report1.pdf, it will then set to be Adobe PDF format. If file extension cannot be mapped into supported file format, CrystalReportsNinja will export your Crystal Reports into plain text file.
 
 ### -S, Server name or Data Source name
 Most of the time, you need not specify the server name or data source name of your Crystal Reports file as every Crystal Reports file saves data source information during design time.
@@ -182,7 +176,34 @@ If you are using trusted connection to your SQL server, you wouldn't need to sup
 
 If you are using a password protected Microsoft Access database, you need only to specify password and not username.
 
+### -E, Crystal Reports Export File Type
+Use -E to specify desired file format. There are 13 file formats that you can export a Crystal Reports file.  If -E argument is not supplied, CrystalReportsNinja will look into the output file extension.  If output file is report1.pdf, it will then set to be Adobe PDF format. If file extension cannot be mapped into supported file format, CrystalReportsNinja will export your Crystal Reports into plain text file.
+
+### -O, Crystal Reports output file
+If -O is not specified, Crystal Reports Exporter will just export the Crystal Reports into the same directory when Crystal Reports source file is resided.
+
+The filename of the exported file is the same as Crystal Report source file and ending with timestamp (yyyyMMddHHmmss).
+
+### -N, Printer Name
+Network printer : \\\\PrintServer\\Printername or Local printer : printername.
+
+### -C, Copies to Print
+Number of copies to print to printer.
+
+### -A Passing in Parameters of Crystal Reports
+Parameters within the Crystal Report that you would like to pass a value to.  Case must match.
+
+### -L Write Log File
+filename ninja-yyyyMMddHHmmss.log
+
+### -LC Write Log Output to Console
+
+
+### -SF, Crystal Reports Selection Formula
+The Crystal Reports Record Selection Formula to use.  The result of the formula must be boolean (at least as far as I can tell).  You can find the field name to use by opening the Crystal Report, right clicking the field and selecting 'Find in Formulas'.  The field name will be displayed next to the "Matches for".
+
 ### -M Email Report
+
 
 ### -MF From Email Address
 The email address that the email will appear to be from.  Defaults to CrystalReportsNinja@noreply.com.
@@ -196,11 +217,7 @@ The text that will appear in the subject line of the email.  Defaults to Crystal
 ### -MZ SMTP Server
 SMTP server address.  Mandatory for Email Report.
 
-### -a Passing in Parameters of Crystal Reports
-We can have as many Parameters as we want in one Crystal Reports file. 
-When we refresh a report, it prompts user to input the value of parameter in runtime in order to produce the result that user wants.
 
-You can pass parameter value to CrystalReportsNinja.exe when it is executed.
 
 ###Example 1
 Let's take an example of a Crystal Reports file test.rpt located in C: root directory. The Crystal Reports file has two parameters, namely Supplier and Date Range.

@@ -1,0 +1,1 @@
+-u useraccount -p password -f c:\tmp\CrystalReport_Test1.rpt -o c:\tmp\test1.pdf -e pdf -sf {uspCrystalReport_Test1;1.ListPrice}=9.50

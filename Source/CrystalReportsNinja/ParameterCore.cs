@@ -30,7 +30,7 @@ namespace CrystalReportsNinja
             {
                 _userParams.Add(new UserParameter
                 {
-                    ParameterName = input.Substring(0, input.IndexOf(":")).Trim(),
+                    ParameterName = input.Substring(0, input.IndexOf(":")),
                     ParameterValue = (input.Substring(input.IndexOf(":") + 1, input.Length - (input.IndexOf(":") + 1)))
                 }
                 );

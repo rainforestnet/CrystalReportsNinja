@@ -24,6 +24,7 @@ namespace CrystalReportsNinja
             Console.WriteLine("     -F Crystal reports path and filename.           (Mandatory)");
             Console.WriteLine("     -S Database Server Name.                        (instance name)");
             Console.WriteLine("     -D Database Name.");
+            Console.WriteLine("     -SF Selection Formula.");
             Console.WriteLine("\n     ------------------ Output Config -----------------");
             Console.WriteLine("     -O Output path and filename.");
             Console.WriteLine("     -E Export file type.                            (pdf,doc,xls,xlsx,rtf,htm,rpt,txt,csv...) If print to printer simply specify \"print\"");
@@ -55,7 +56,7 @@ namespace CrystalReportsNinja
             Console.WriteLine("\n     ----------------- Example Scripts ----------------");
             Console.WriteLine("     Example: C:\\> CrystalReportsNinja -U user1 -P mypass -S Server01 -D \"ExtremeDB\" -F c:\\test.rpt -O d:\\test.pdf -a \"Supplier Name:Active Outdoors\" -a \"Date Range:(12-01-2001,12-04-2002)\"");
             Console.WriteLine("     Example Email : Add this to the above line, -M -MSA SMTP-FQDN -MSP 25 -MUN \"smtpUN\" -MPW \"smtpPW\" -MN \"Report User\" -MF noreply@noreply.com.au -MS \"Report Subject\" -MI \"Report Body\" -MN \"Report User\" -MF noreply@noreply.com.au -MT myemail@domain.com");
-            Console.WriteLine("\n     Learn more in http://www.rainforestnet.com/crystal-reports-exporter/");
+            Console.WriteLine("\n     Learn more in https://github.com/mhertzfeld/CrystalReportsNinja");
             
         }
 
