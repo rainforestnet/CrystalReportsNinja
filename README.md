@@ -145,16 +145,19 @@ The only mandatory argument is "-F", in which is for user to specify a Crystal R
 * ------------------ Email Config ------------------;
 * -M  Email Report Output.                        (Enable Email Support);
 * -MF Email Address to be SENT FROM.              (Optional, Default: noreply@noreply.com);
+* -MN Email SENT FROM Display Name                (Optional, Default: Crystal Reports)
 * -MT Email Address to SEND to.                   (Mandatory);
 * -MC Email Address to be CC'd.                   (Optional);
 * -MB Email Address to be BCC'd.                  (Optional);
 * -MS Email Subject Line of the Email.            (Optional, Default: Crystal Reports);
-* -MZ SMTP server address.                        (Mandatory, if SSL enabled FQDN is required);
-* -MP SMTP server port.                           (Optional, Default: 25);
-* -ME SMTP server Enable SSL.                     (Optional, Default: False);
-* -MA SMTP Auth - Use Current User Credentials,   (Optional, Default: False );
+* -MI Email Message Body.                         (Optional)
+* -MSA SMTP server address.                        (Mandatory, if SSL enabled FQDN is required);
+* -MSP SMTP server port.                           (Optional, Default: 25);
+* -MSE SMTP server Enable SSL.                     (Optional, Default: False);
+* -MSC SMTP Auth - Use Current User Credentials,   (Optional, Default: False );
 * -MUN SMTP server Username.                      (Optional) \"domain\\username\";
 * -MPW SMTP server Password.                      (Optional) \"password\";
+* -MK Keep the generated file after sending email (Optional, Boolean True/False)
 
 ### -F, Crystal Reports source file
 This is the only mandatory (must specify) argument, it allows your to specify the Crystal Reports filename to be exported.
@@ -208,14 +211,23 @@ The Crystal Reports Record Selection Formula to use.  The result of the formula 
 ### -MF From Email Address
 The email address that the email will appear to be from.  Defaults to CrystalReportsNinja@noreply.com.
 
+### -MN From Email Address Display Nmae
+The display name that the email will appear to be from.
+
 ### -MT To Email Address
 The email address that the email will be sent to.  Mandatory for Email Report.
 
 ### -MS Subject
 The text that will appear in the subject line of the email.  Defaults to Crystal Reports Ninja.
 
-### -MZ SMTP Server
+### -MI Email Message Body
+The text that will appear in the body of the email.
+
+### -MSA SMTP Server
 SMTP server address.  Mandatory for Email Report.
+
+### -MK Keep the generated file after sending by email
+This is a boolean that will determine if the generated report should be kept after sending by email. Setting ```-MK True``` will keep the generated file after sending by email. 
 
 
 
@@ -268,7 +280,9 @@ c:\>CrystalReportsNinja -F report101.rpt -E print -N "HP LaserJet 1200" -C 3
 ```
 
 Email Report Example
--F Z:\CrystalReportsNinja\CrystalReports\ConsignaStoreInventoryValue.rpt -E pdf -O Z:\CrystalReportsNinja\Output\Test.pdf -a "@CustomerId:12345" -a "@Warehouse:987" -M -MF "Report1@company.com" -MT "good_user@company.com" -MS "Testing Ninja" -MZ "mail.company.com"
+```
+c:\>CrystalReportsNinja -F Z:\CrystalReportsNinja\CrystalReports\ConsignaStoreInventoryValue.rpt -E pdf -O Z:\CrystalReportsNinja\Output\Test.pdf -a "@CustomerId:12345" -a "@Warehouse:987" -M -MF "Report1@company.com" -MT "good_user@company.com" -MS "Testing Ninja" -MSA "mail.company.com"
+```
 
 ## Troubleshooting Ninja
 Check the ensure that the version of Ninja (64bit\32bit) you are using matches the version of the ODBC Driver (64bit\32bit) you are using.  FYI, as of Oct 2019 the Crystal Reports Developer application is still 32bit.
