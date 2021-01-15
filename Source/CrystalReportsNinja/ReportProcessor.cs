@@ -44,8 +44,10 @@ namespace CrystalReportsNinja
                 throw new Exception("Invalid Crystal Reports file");
 
             _reportDoc.Load(_sourceFilename, OpenReportMethod.OpenReportByDefault);
-            _logger.Write(string.Format("Report loaded successfully"));
-            Console.WriteLine("Report loaded successfully");
+
+            var filenameOnly = System.IO.Path.GetFileNameWithoutExtension(_sourceFilename);
+            _logger.Write(string.Format("Report {0} loaded successfully", filenameOnly));
+            Console.WriteLine("Report {0} loaded successfully", filenameOnly);
         }
 
         /// <summary>
@@ -299,6 +301,30 @@ namespace CrystalReportsNinja
 
                 PerformRefresh();
                 PerformOutput();
+            }
+            catch (Exception ex)
+            {
+                _logger.Write(string.Format("Exception: {0}", ex.Message));
+                _logger.Write(string.Format("Inner Exception: {0}", ex.InnerException));
+
+                throw ex;
+            }
+            finally
+            {
+                _reportDoc.Close();
+            }
+        }
+
+        /// <summary>
+        /// Collect and return the Crystal Reports data connection info.
+        /// </summary>
+        public ReportInfo GetReportInfo()
+        {
+            try
+            {
+                LoadReport();
+                var reportInfo = new ReportInfo(_reportDoc);
+                return reportInfo;
             }
             catch (Exception ex)
             {

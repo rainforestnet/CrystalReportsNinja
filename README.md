@@ -26,9 +26,8 @@ The only mandatory argument is "-F", in which is for user to specify a Crystal R
 ### List of arguments
 
 * -F Crystal Reports filename to be loaded (i.e. "C:\Report Source\Report1.rpt") 
-* -O Crystal Reports Output filename (i.e. "C:\Reports Output\Report1.pdf" ) [Optional]
+* -O Output filename (i.e. "C:\Reports Output\Report1.pdf" ) [Optional]
 * -E Intended file format to be exported.(i.e. pdf, doc, xls .. and etc). If you wish to print Crystal Reports to a printer, simply "-E print" instead of specifying file format.
-
 * -N Printer Name. If printer name is not specified, it looks for default printer in the computer. If network printer, -N \\computer01\printer1
 * -C Number of copy to be printed (any integer value i.e. 1,2,3..)
 * -S Server Name for server where data resides. Only one server per Crystal Reports is allowed.
@@ -36,7 +35,8 @@ The only mandatory argument is "-F", in which is for user to specify a Crystal R
 * -U Data source / server login username. Do not specify username and password for Integrated Security connection.
 * -P Data source / server login password. Do not specify username and password for Integrated Security connection.
 * -a Pass Crystal Reports file parameter set on run-time
-* -l Create a log file into CrystalReportsNinja.exe directory
+* -L Create a log file into CrystalReportsNinja.exe directory
+* -I Display report info and quit
 
 ### -F, Crystal Reports source file
 This is the only mandatory (must specify) argument, it allows your to specify the Crystal Reports filename to be exported.
@@ -143,9 +143,10 @@ When we refresh a report, it prompts user to input the value of parameter in run
 
 You can pass parameter value to CrystalReportsNinja.exe when it is executed.
 
+### -I, Report Info
+Specifying this option will display information about the report and will not run the report (and as such Username, Server, Parameters, etc. are ignored). If -E is included, only the format TAB is implemented - any other option will display the human-readable format (just as if -E was not included). If -O is included the report information will not be displayed on the screen but will be output to the file specified. If that file doesn't exist it will be created and headers (if applicable) will be output first. If the file does exist it will be appended to (not clobbered), but headers will not be output.
 
-
-###Example 1
+### Example 1
 Let's take an example of a Crystal Reports file test.rpt located in C: root directory. The Crystal Reports file has two parameters, namely Supplier and Date Range.
 ```
 c:\>CrystalReportsNinja -U user1 -P mypass -S server1 -D Demo 
@@ -160,7 +161,7 @@ Use comma (,) to separate start value and end value of a Range parameter.
 Use pipe (|) to pass multiple values into the same parameter.
 Parameter name is case sensitive
 
-###Example 2
+### Example 2
 The following crystal Reports "testTraining.rpt" has 5 discrete parameters and 2 range parameters.
 Discrete parameters are:
 * company
@@ -192,4 +193,27 @@ Example to print Crystal Reports output to printer
 ```
 c:\>CrystalReportsNinja -F report101.rpt -E print -N "HP LaserJet 1200" -C 3
 ```
+
+### Example 3
+Let's again take an example of the test.rpt Crystal Report located in the C: root directory. This will display information about that report:
+```
+c:>\CrystalReportsNinja -F test.rpt -I
+```
+
+This would produce output similar to:
+
+```
+Report Name: Test Report
+File Name: rassdk://C:\test.rpt
+Connection #1:
+  Server Name: devsql01
+  Database Name: AdventureWorks
+  Integrated Security: No
+  Username: sa
+  Password: 
+Datasource #1:
+  Name: usp_GetTestData;1
+  Location: usp_GetTestData;1
+```
+
 
