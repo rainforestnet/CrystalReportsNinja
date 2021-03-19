@@ -183,6 +183,7 @@ namespace CrystalReportsNinja
                 TableLogOnInfo logonInfo = new TableLogOnInfo();
                 foreach (Table table in _reportDoc.Database.Tables)
                 {
+                    logonInfo = table.LogOnInfo;
                     if (server != null)
                         logonInfo.ConnectionInfo.ServerName = server;
 
