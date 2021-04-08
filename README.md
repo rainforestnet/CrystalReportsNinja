@@ -57,10 +57,6 @@ The Crystal Reports Ninja application can be invoked using Windows PowerShell or
 <td>Comma delimited text file</td>
 </tr>
 <tr>
-<td>csv</td>
-<td>Comma delimited text file </td>
-</tr>
-<tr>
 <td>xml</td>
 <td>xml file </td>
 </tr>
