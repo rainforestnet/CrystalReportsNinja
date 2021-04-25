@@ -78,7 +78,7 @@ The Crystal Reports Ninja application can be invoked using Windows PowerShell or
 
 ## PreRequisites
 * .NET Framework 4.5
-* Crystal Reports Runtime 13.0.28 (or later).
+* Crystal Reports Runtime 13.0.30.3805 (or later).
 	- If using the 64-bit Crystal Reports Ninja you must have the 64-bit Crystal Reports Runtime installed.  
 	- If using the 32-bit Crystal Reports Ninja you must have the 32-bit Crystal Reports Runtime installed.  
 	- Crystal Reports Runtime installation files can be downloaded from SAP using one of the following link.  
@@ -122,11 +122,12 @@ The only mandatory argument is "-F", in which is for user to specify a Crystal R
 ### List of arguments
 
 * ----------- Report and Database Config -----------;
-* -F Crystal Reports Path and Filename.           (Mandatory);
-* -S Database Server Name.                        (Optional if using Database Server set within the Crystal Report);
-* -D Database Name.                               (Optional if using Database Server set within the Crystal Report);
-* -U Database User Account.                       (Optional, If not set IntegratedSecurity is used);
-* -P Database User Account Password.              (Optional, If not set IntegratedSecurity is used);
+* -F  Crystal Reports Path and Filename.           (Mandatory);
+* -S  Database Server Name.                        (Optional if using Database Server set within the Crystal Report);
+* -D  Database Name.                               (Optional if using Database Server set within the Crystal Report);
+* -U  Database User Account.                       (Optional, If not set IntegratedSecurity is used);
+* -P  Database User Account Password.              (Optional, If not set IntegratedSecurity is used);
+* -CU The Culture Locale ID to set in the Report Document  (Optional);
 * ------------------ Output Config -----------------;
 * -E Export Type.                                 (pdf,doc,xls,xlsx,rtf,htm,rpt,txt,csv,print);
 * -O Output Path and Filename.                    (Not needed when printed);

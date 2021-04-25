@@ -167,6 +167,11 @@ namespace CrystalReportsNinja
         /// </summary>
         public string SelectionFormula { get; set; }
 
+        /// <summary>
+        /// The Locale ID to set in the ReportClientDocument
+        /// </summary>
+        public Int32? Culture { get; set; }
+
         public ArgumentContainer()
         {
             // Assigning default values
@@ -176,6 +181,8 @@ namespace CrystalReportsNinja
             PrintCopy = 1;
             PrinterName = "";
             Refresh = true;
+            SelectionFormula = null;
+            Culture = null;
 
             //Email Config
             MailTo = null;
@@ -242,6 +249,10 @@ namespace CrystalReportsNinja
                         }
                         else if (parameters[i].ToUpper() == "-A")
                             ParameterCollection.Add(parameters[i + 1]);
+                        else if (parameters[i].ToUpper() == "-SF")
+                            SelectionFormula = parameters[i + 1];
+                        else if (parameters[i].ToUpper() == "-CU")
+                            Culture = int.Parse(parameters[i + 1]);
 
                         //Email Config
                         else if (parameters[i].ToUpper() == "-M")
@@ -274,8 +285,6 @@ namespace CrystalReportsNinja
                             SmtpUN = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-MPW")
                             SmtpPW = parameters[i + 1];
-                        else if (parameters[i].ToUpper() == "-SF")
-                            SelectionFormula = parameters[i + 1];
                     }
                 }
 

@@ -1,6 +1,7 @@
 ﻿using CrystalDecisions.CrystalReports.Engine;
 using CrystalDecisions.Shared;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Net.Mail;
 
@@ -41,6 +42,17 @@ namespace CrystalReportsNinja
 
             if (_sourceFilename.LastIndexOf(".rpt") == -1)
                 throw new Exception("Invalid Crystal Reports file");
+
+            if (ReportArguments.Culture.HasValue)
+            {
+                CultureInfo _CultureInfo = CultureInfo.GetCultureInfo(ReportArguments.Culture.Value);
+
+                _logger.Write(string.Format("Using locale {0} {1}", _CultureInfo.LCID, _CultureInfo.EnglishName));
+
+                _reportDoc.ReportClientDocument.LocaleID = (CrystalDecisions.ReportAppServer.DataDefModel.CeLocale)_CultureInfo.LCID;
+                _reportDoc.ReportClientDocument.PreferredViewingLocaleID = (CrystalDecisions.ReportAppServer.DataDefModel.CeLocale)_CultureInfo.LCID;
+                _reportDoc.ReportClientDocument.ProductLocaleID = (CrystalDecisions.ReportAppServer.DataDefModel.CeLocale)_CultureInfo.LCID;
+            }
 
             _reportDoc.Load(_sourceFilename, OpenReportMethod.OpenReportByDefault);
             var filenameOnly = System.IO.Path.GetFileNameWithoutExtension(_sourceFilename);
