@@ -95,10 +95,6 @@ If file extension cannot be mapped into supported file format, CrystalReportsNin
 </tr>
 <tr>
 <td>csv</td>
-<td>Comma delimited text file</td>
-</tr>
-<tr>
-<td>csv</td>
 <td>Comma delimited text file </td>
 </tr>
 <tr>
