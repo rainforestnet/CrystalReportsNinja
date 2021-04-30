@@ -12,7 +12,7 @@ namespace CrystalReportsNinja
         /// <summary>
         /// -I Use Integrated Security for Database Credentials
         /// </summary>
-        public string IntegratedSecurity { get; set; }
+        public Boolean IntegratedSecurity { get; set; }
 
         /// <summary>
         /// -U Report database login username (mandatory unless integrated security login)
@@ -188,7 +188,7 @@ namespace CrystalReportsNinja
             Refresh = true;
             SelectionFormula = null;
             Culture = null;
-            IntegratedSecurity = null;
+            IntegratedSecurity = false;
             UserName = null;
             Password = null;
             ReportPath = null;
@@ -238,6 +238,8 @@ namespace CrystalReportsNinja
                             UserName = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-P")
                             Password = parameters[i + 1];
+                        else if (parameters[i].Equals("-I"))
+                            IntegratedSecurity = true;
                         else if (parameters[i].ToUpper() == "-F")
                             ReportPath = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-O")
@@ -247,7 +249,7 @@ namespace CrystalReportsNinja
                         else if (parameters[i].ToUpper() == "-D")
                             DatabaseName = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-E")
-                            {OutputFormat = parameters[i + 1]; if (OutputFormat.ToUpper() == "PRINT") { PrintOutput = true; }}
+                        { OutputFormat = parameters[i + 1]; if (OutputFormat.ToUpper() == "PRINT") { PrintOutput = true; } }
                         else if (parameters[i].ToUpper() == "-N")
                             PrinterName = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-C")
@@ -268,7 +270,7 @@ namespace CrystalReportsNinja
 
                         //Email Config
                         else if (parameters[i].ToUpper() == "-M")
-                            EmailOutput = true;                        
+                            EmailOutput = true;
                         else if (parameters[i].ToUpper() == "-MF")
                             MailFrom = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-MN")

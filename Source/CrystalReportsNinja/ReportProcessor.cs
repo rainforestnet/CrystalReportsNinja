@@ -183,32 +183,27 @@ namespace CrystalReportsNinja
         /// </summary>
         private void PerformDBLogin()
         {
-            bool toRefresh = ReportArguments.Refresh;
-
-            if (toRefresh)
+            if (ReportArguments.Refresh)
             {
-                TableLogOnInfo logonInfo = new TableLogOnInfo();
+                TableLogOnInfo logonInfo;
                 foreach (Table table in _reportDoc.Database.Tables)
                 {
                     logonInfo = table.LogOnInfo;
                     if (!String.IsNullOrWhiteSpace(ReportArguments.ServerName))
-                        logonInfo.ConnectionInfo.ServerName = ReportArguments.ServerName;
+                    { logonInfo.ConnectionInfo.ServerName = ReportArguments.ServerName; }
 
                     if (!String.IsNullOrWhiteSpace(ReportArguments.DatabaseName))
-                        logonInfo.ConnectionInfo.DatabaseName = ReportArguments.DatabaseName;
+                    { logonInfo.ConnectionInfo.DatabaseName = ReportArguments.DatabaseName; }
 
-                    if ((!String.IsNullOrWhiteSpace(ReportArguments.IntegratedSecurity)) &&
-                        (ReportArguments.IntegratedSecurity.Equals("Y")))
-                    {
-                        logonInfo.ConnectionInfo.IntegratedSecurity = true;
-                    }
+                    if (ReportArguments.IntegratedSecurity)
+                    { logonInfo.ConnectionInfo.IntegratedSecurity = true; }
                     else
                     {
                         if (!String.IsNullOrWhiteSpace(ReportArguments.UserName))
-                            logonInfo.ConnectionInfo.UserID = ReportArguments.UserName;
+                        { logonInfo.ConnectionInfo.UserID = ReportArguments.UserName; }
 
                         if (!String.IsNullOrWhiteSpace(ReportArguments.Password))
-                            logonInfo.ConnectionInfo.Password = ReportArguments.Password;
+                        { logonInfo.ConnectionInfo.Password = ReportArguments.Password; }
                     }
                     table.ApplyLogOnInfo(logonInfo);
                 }
