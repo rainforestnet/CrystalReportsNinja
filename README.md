@@ -34,7 +34,7 @@ The Crystal Reports Ninja application can be invoked using Windows PowerShell or
 </tr>
 <tr>
 <td>xls</td>
-<td>Microsoft Excel </td>
+<td>Microsoft Excel (Old Version) </td>
 </tr>
 <tr>
 <td>xlsdata</td>
@@ -261,14 +261,21 @@ c:\>CrystalReportsNinja -U user1 -P secret -F C:\Creport\Statement.rpt
 -O D:\Output\Statement.pdf -E pdf -S"AnySystem DB" 
 -a "company:The One Computer,Inc" -a "customer:"MyBooks Store" 
 -a "branch:Malaysia" -a "daterange:(12-01-2001,12-04-2002)"
--a "product:(AFD001,AFD005)"
+-a "productrange:(AFD001,AFD005)"
 ```
 
-Example of Multiple values parameters :
+Example of Multiple values parameters (without any ranges):
 ```
 c:\>CrystalReportsNinja -F testreport.rpt -O testOutput.xls 
--E xlsdata -S order.mdb -a "date:(01-01-2001,28-02-2001)|(02-01-2002,31-10-2002)|(02-08-2002,31-12-2002)"
--a "Client:(Ace Soft Inc,Best Computer Inc)|(Xtreme Bike Inc,Zebra Design Inc)"
+-E xlsdata -S order.mdb -a "dates:(25-12-2001)|(25-12-2002)|25-12-2003)"
+-a "Clients:(Ace Soft Inc)|(Xtreme Bike Inc)"
+```
+
+Example of Multiple values parameters (with ranges) :
+```
+c:\>CrystalReportsNinja -F testreport.rpt -O testOutput.xls 
+-E xlsdata -S order.mdb -a "dateRanges:(01-01-2001,28-02-2001)|(02-01-2002,31-10-2002)|(02-08-2002,31-12-2002)"
+-a "ClientRanges:(Ace Soft Inc,Best Computer Inc)|(Xtreme Bike Inc,Zebra Design Inc)"
 ```
 
 Example to print Crystal Reports output to printer
