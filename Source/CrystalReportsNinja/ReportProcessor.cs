@@ -185,38 +185,34 @@ namespace CrystalReportsNinja
         {
             bool toRefresh = ReportArguments.Refresh;
 
-            var server = ReportArguments.ServerName;
-            var database = ReportArguments.DatabaseName;
-            var username = ReportArguments.UserName;
-            var password = ReportArguments.Password;
-
             if (toRefresh)
             {
                 TableLogOnInfo logonInfo = new TableLogOnInfo();
                 foreach (Table table in _reportDoc.Database.Tables)
                 {
                     logonInfo = table.LogOnInfo;
-                    if (server != null)
-                        logonInfo.ConnectionInfo.ServerName = server;
+                    if (!String.IsNullOrWhiteSpace(ReportArguments.ServerName))
+                        logonInfo.ConnectionInfo.ServerName = ReportArguments.ServerName;
 
-                    if (database != null)
-                        logonInfo.ConnectionInfo.DatabaseName = database;
+                    if (!String.IsNullOrWhiteSpace(ReportArguments.DatabaseName))
+                        logonInfo.ConnectionInfo.DatabaseName = ReportArguments.DatabaseName;
 
-                    if (username == null && password == null)
+                    if ((!String.IsNullOrWhiteSpace(ReportArguments.IntegratedSecurity)) &&
+                        (ReportArguments.IntegratedSecurity.Equals("Y")))
+                    {
                         logonInfo.ConnectionInfo.IntegratedSecurity = true;
+                    }
                     else
                     {
-                        if (username != null && username.Length > 0)
-                            logonInfo.ConnectionInfo.UserID = username;
+                        if (!String.IsNullOrWhiteSpace(ReportArguments.UserName))
+                            logonInfo.ConnectionInfo.UserID = ReportArguments.UserName;
 
-                        if (password == null) //to support blank password
-                            logonInfo.ConnectionInfo.Password = "";
-                        else
-                            logonInfo.ConnectionInfo.Password = password;
+                        if (!String.IsNullOrWhiteSpace(ReportArguments.Password))
+                            logonInfo.ConnectionInfo.Password = ReportArguments.Password;
                     }
                     table.ApplyLogOnInfo(logonInfo);
                 }
-                _logger.Write(string.Format("Logged into {1} Database on {0} successfully with User id: {2}", server, database, username));
+                _logger.Write(string.Format("Logged into {1} Database on {0} successfully with User id: {2}", ReportArguments.ServerName, ReportArguments.DatabaseName, ReportArguments.UserName));
             }
         }
 

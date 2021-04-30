@@ -10,6 +10,11 @@ namespace CrystalReportsNinja
     public class ArgumentContainer
     {
         /// <summary>
+        /// -I Use Integrated Security for Database Credentials
+        /// </summary>
+        public string IntegratedSecurity { get; set; }
+
+        /// <summary>
         /// -U Report database login username (mandatory unless integrated security login)
         /// </summary>
         public string UserName { get; set; }
@@ -183,6 +188,13 @@ namespace CrystalReportsNinja
             Refresh = true;
             SelectionFormula = null;
             Culture = null;
+            IntegratedSecurity = null;
+            UserName = null;
+            Password = null;
+            ReportPath = null;
+            OutputPath = null;
+            ServerName = null;
+            OutputFormat = null;
 
             //Email Config
             MailTo = null;
