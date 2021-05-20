@@ -171,41 +171,36 @@ namespace CrystalReportsNinja
         /// </summary>
         private void PerformDBLogin()
         {
-            bool toRefresh = ReportArguments.Refresh;
-
-            var server = ReportArguments.ServerName;
-            var database = ReportArguments.DatabaseName;
-            var username = ReportArguments.UserName;
-            var password = ReportArguments.Password;
-
-            if (toRefresh)
+            if (ReportArguments.Refresh)
             {
-                TableLogOnInfo logonInfo = new TableLogOnInfo();
+                TableLogOnInfo logonInfo;
                 foreach (Table table in _reportDoc.Database.Tables)
                 {
-                    if (server != null)
-                        logonInfo.ConnectionInfo.ServerName = server;
+                    logonInfo = table.LogOnInfo;
+                    if (!String.IsNullOrWhiteSpace(ReportArguments.ServerName))
+                    { logonInfo.ConnectionInfo.ServerName = ReportArguments.ServerName; }
 
-                    if (database != null)
-                        logonInfo.ConnectionInfo.DatabaseName = database;
+                    if (!String.IsNullOrWhiteSpace(ReportArguments.DatabaseName))
+                    { logonInfo.ConnectionInfo.DatabaseName = ReportArguments.DatabaseName; }
 
-                    if (username == null && password == null)
-                        logonInfo.ConnectionInfo.IntegratedSecurity = true;
+                    if (ReportArguments.IntegratedSecurity)
+                       {
+                           logonInfo.ConnectionInfo.IntegratedSecurity = true;
+                           _logger.Write(string.Format("Logging into {1} Database on {0} with Integrated Security = {2}", logonInfo.ConnectionInfo.ServerName, logonInfo.ConnectionInfo.DatabaseName, logonInfo.ConnectionInfo.IntegratedSecurity));
+                       }
                     else
-                    {
-                        if (username != null && username.Length > 0)
-                            logonInfo.ConnectionInfo.UserID = username;
-
-                        if (password == null) //to support blank password
-                            logonInfo.ConnectionInfo.Password = "";
-                        else
-                            logonInfo.ConnectionInfo.Password = password;
-                    }
+                       {
+                           if (!String.IsNullOrWhiteSpace(ReportArguments.UserName))
+                           { logonInfo.ConnectionInfo.UserID = ReportArguments.UserName; }
+                           if (!String.IsNullOrWhiteSpace(ReportArguments.Password))
+                           { logonInfo.ConnectionInfo.Password = ReportArguments.Password; }
+                           ///_logger.Write(string.Format("Logging into {1} Database on {0} with User id: {2} and PW: {3} with Integrated Security = {4}", logonInfo.ConnectionInfo.ServerName, logonInfo.ConnectionInfo.DatabaseName, logonInfo.ConnectionInfo.UserID, logonInfo.ConnectionInfo.Password, logonInfo.ConnectionInfo.IntegratedSecurity));
+                           _logger.Write(string.Format("Logging into {1} Database on {0} with User id: {2} with Integrated Security = {3}", logonInfo.ConnectionInfo.ServerName, logonInfo.ConnectionInfo.DatabaseName, logonInfo.ConnectionInfo.UserID, logonInfo.ConnectionInfo.IntegratedSecurity));
+                       }
                     table.ApplyLogOnInfo(logonInfo);
                 }
-                _logger.Write(string.Format("Logged into {1} Database on {0} successfully with User id: {2}", server, database, username));
-            }
-        }
+           }
+       }
 
         /// <summary>
         /// Set export file type or printer to Report Document object.
@@ -363,7 +358,8 @@ namespace CrystalReportsNinja
                         smtpClient.Port = ReportArguments.SmtpPort;
                         smtpClient.EnableSsl = ReportArguments.SmtpSSL;
 
-                        if (ReportArguments.SmtpUN != null && ReportArguments.SmtpPW != null)
+                        ///if (ReportArguments.SmtpUN != null && ReportArguments.SmtpPW != null)
+                        if (ReportArguments.SmtpAuth == true)
                         {
                                 //Uses Specified credentials to send email
                                 smtpClient.UseDefaultCredentials = true;
@@ -377,7 +373,7 @@ namespace CrystalReportsNinja
                             }
                         smtpClient.Send(_MailMessage);
                         _logger.Write(string.Format("Report {0} Emailed to : {1} CC'd to: {2} BCC'd to: {3}", _outputFilename, ReportArguments.MailTo, ReportArguments.MailCC, ReportArguments.MailBcc));
-                        _logger.Write(string.Format("SMTP Details: Server:{0}, Port:{1}, SSL:{2} Auth:{3}, UN:{4}", smtpClient.Host, smtpClient.Port, smtpClient.EnableSsl, smtpClient.UseDefaultCredentials, ReportArguments.SmtpUN));
+                        _logger.Write(string.Format("SMTP Details: Server:{0}, Port:{1}, SSL:{2} Auth:{3}, UN:{4}", smtpClient.Host, smtpClient.Port, smtpClient.EnableSsl, ReportArguments.SmtpAuth, ReportArguments.SmtpUN));
                     }
 
                     if (!ReportArguments.EmailKeepFile)

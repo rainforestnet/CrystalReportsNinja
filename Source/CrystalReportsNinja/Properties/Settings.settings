@@ -1,0 +1,66 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CrystalReportsNinja.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SQL_Use_IntegratedSecurity" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="EnableLogToConsole" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SMTP_Server_Address" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Smtp.office365.com</Value>
+    </Setting>
+    <Setting Name="SMTP_Server_Port" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">587</Value>
+    </Setting>
+    <Setting Name="SMTP_SSL_Reqruired" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SMTP_Authentication_Used" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Email_CC" Type="System.String" Scope="User">
+      <Value Profile="(Default)">NA</Value>
+    </Setting>
+    <Setting Name="Email_BCC" Type="System.String" Scope="User">
+      <Value Profile="(Default)">NA</Value>
+    </Setting>
+    <Setting Name="Email_Message_Body" Type="System.String" Scope="User">
+      <Value Profile="(Default)">The information contained is intended for the named recipients only, it may contain confidential and/or legally privileged information and is only intended for the use of the person to whom it is addressed. If you have received this e-mail in error you must not copy, duplicate, forward, print or distribute any information contained herein, but must ensure that this e-mail is permanently deleted and advise the sender. </Value>
+    </Setting>
+    <Setting Name="Keep_Outputfile_after_Sending" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Default_Printer_Name" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SQL_Server_Name" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SQLSERVERNAME</Value>
+    </Setting>
+    <Setting Name="SQL_Database_Name" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SQLDBNAME</Value>
+    </Setting>
+    <Setting Name="SQL_User_Name" Type="System.String" Scope="User">
+      <Value Profile="(Default)">REPORTUSERNAME</Value>
+    </Setting>
+    <Setting Name="SQL_Password" Type="System.String" Scope="User">
+      <Value Profile="(Default)">REPORTUSERPASSWORD</Value>
+    </Setting>
+    <Setting Name="SMTP_User_Name" Type="System.String" Scope="User">
+      <Value Profile="(Default)">USERNAME</Value>
+    </Setting>
+    <Setting Name="SMTP_Password" Type="System.String" Scope="User">
+      <Value Profile="(Default)">PASSWORD</Value>
+    </Setting>
+    <Setting Name="Email_From" Type="System.String" Scope="User">
+      <Value Profile="(Default)">noreply@noreply.com</Value>
+    </Setting>
+    <Setting Name="Email_From_Display_Name" Type="System.String" Scope="User">
+      <Value Profile="(Default)">NoReply</Value>
+    </Setting>
+    <Setting Name="Email_Subject" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Automated Crystal Reports</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

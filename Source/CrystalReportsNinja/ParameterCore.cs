@@ -19,7 +19,6 @@ namespace CrystalReportsNinja
         public ParameterCore(string logfilename, ArgumentContainer _ArgumentContainer)
         {
             _userParams = new List<UserParameter>();
-
             _parameterCollection = _ArgumentContainer.ParameterCollection;
             _logger = new LogWriter(logfilename, _ArgumentContainer.EnableLogToConsole);
         }
@@ -75,7 +74,6 @@ namespace CrystalReportsNinja
 
                 }
             }
-
             return paramValues;
         }
 
