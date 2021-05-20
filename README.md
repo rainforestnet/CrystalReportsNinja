@@ -1,4 +1,4 @@
-# Crystal Reports Ninja
+# Crystal Reports Ninja v1.10.0.0
 
 Forked from Tengyongs Crystal Reports Ninja.  https://github.com/rainforestnet/CrystalReportsNinja
 
