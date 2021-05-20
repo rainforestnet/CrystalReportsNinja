@@ -34,7 +34,7 @@ The Crystal Reports Ninja application can be invoked using Windows PowerShell or
 </tr>
 <tr>
 <td>xls</td>
-<td>Microsoft Excel </td>
+<td>Microsoft Excel (Old Version) </td>
 </tr>
 <tr>
 <td>xlsdata</td>
@@ -51,10 +51,6 @@ The Crystal Reports Ninja application can be invoked using Windows PowerShell or
 <tr>
 <td>tab</td>
 <td>Tab delimited text file </td>
-</tr>
-<tr>
-<td>csv</td>
-<td>Comma delimited text file</td>
 </tr>
 <tr>
 <td>csv</td>
@@ -93,6 +89,14 @@ The Crystal Reports Ninja application can be invoked using Windows PowerShell or
 
 ## Installation
 * Copy all the files from either the 64-bit or 32-bit Deployment directories to a new local directory.
+* The Only Files required to actually run the CrystalReportsNinja.exe and CrystalReportsNinja.exe.config.
+
+## CONFIG File - Default Settings for CrystalReportsNinja
+* CrystalReportsNinja has been updated to now utilise an external CONFIG file for default parameters rather then them being hardcoded
+* Modify the CrystalReportsNinja.exe.config with the required defaults.
+* You can now generate reports with minimal command line arguments, if arguments are supplied it will overide the CONFIG file settings.
+	- eg: CrystalReportsNinja.exe -M -MT test@test.com -E pdf -F test.rpt \" -a Entity:01 -a Year:2021 -a Month:01 \"
+	- This will run a report against the Config file DB, SMTP etc and send a PDF to requested email address.
 
 ## How to use with Windows PowerShell (NEW FEATURE IN 1.4.0.0)
 
@@ -207,7 +211,6 @@ The Crystal Reports Record Selection Formula to use.  The result of the formula 
 
 ### -M Email Report
 
-
 ### -MF From Email Address
 The email address that the email will appear to be from.  Defaults to CrystalReportsNinja@noreply.com.
 
@@ -264,14 +267,21 @@ c:\>CrystalReportsNinja -U user1 -P secret -F C:\Creport\Statement.rpt
 -O D:\Output\Statement.pdf -E pdf -S"AnySystem DB" 
 -a "company:The One Computer,Inc" -a "customer:"MyBooks Store" 
 -a "branch:Malaysia" -a "daterange:(12-01-2001,12-04-2002)"
--a "product:(AFD001,AFD005)"
+-a "productrange:(AFD001,AFD005)"
 ```
 
-Example of Multiple values parameters :
+Example of Multiple values parameters (without any ranges):
 ```
 c:\>CrystalReportsNinja -F testreport.rpt -O testOutput.xls 
--E xlsdata -S order.mdb -a "date:(01-01-2001,28-02-2001)|(02-01-2002,31-10-2002)|(02-08-2002,31-12-2002)"
--a "Client:(Ace Soft Inc,Best Computer Inc)|(Xtreme Bike Inc,Zebra Design Inc)"
+-E xlsdata -S order.mdb -a "dates:(25-12-2001)|(25-12-2002)|25-12-2003)"
+-a "Clients:(Ace Soft Inc)|(Xtreme Bike Inc)"
+```
+
+Example of Multiple values parameters (with ranges) :
+```
+c:\>CrystalReportsNinja -F testreport.rpt -O testOutput.xls 
+-E xlsdata -S order.mdb -a "dateRanges:(01-01-2001,28-02-2001)|(02-01-2002,31-10-2002)|(02-08-2002,31-12-2002)"
+-a "ClientRanges:(Ace Soft Inc,Best Computer Inc)|(Xtreme Bike Inc,Zebra Design Inc)"
 ```
 
 Example to print Crystal Reports output to printer
