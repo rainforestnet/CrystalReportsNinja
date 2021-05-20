@@ -19,6 +19,7 @@ namespace CrystalReportsNinja
             Console.WriteLine("Copyright(c) 2017 Rainforest Software Solution http://www.rainforestnet.com");
             Console.WriteLine("CrystalReportsNinja Arguments Listing");
             Console.WriteLine("\n     -------------- DB and Report Config --------------");
+			Console.WriteLine("     -I Use Intergrated Security for DB Access.		(Optional, False by Default");
             Console.WriteLine("     -U database login username.                     (Optional, If not set IntegratedSecurity is used");
             Console.WriteLine("     -P database login password.                     (Optional, If not set IntegratedSecurity is used");
             Console.WriteLine("     -F Crystal reports path and filename.           (Mandatory)");

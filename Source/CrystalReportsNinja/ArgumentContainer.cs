@@ -10,6 +10,11 @@ namespace CrystalReportsNinja
     public class ArgumentContainer
     {
         /// <summary>
+        /// -I Use Integrated Security for Database Credentials
+        /// </summary>
+        public Boolean IntegratedSecurity { get; set; }
+
+        /// <summary>
         /// -U Report database login username (mandatory unless integrated security login)
         /// </summary>
         public string UserName { get; set; }
@@ -171,32 +176,46 @@ namespace CrystalReportsNinja
         {
             // Assigning default values
             GetHelp = false;
-            EnableLog = false;
+
+            //Report Config
+            ReportPath = null;
+            OutputPath = null;
+            OutputFormat = null;
             PrintOutput = false;
             PrintCopy = 1;
-            PrinterName = "";
+            PrinterName = Properties.Settings.Default.Default_Printer_Name;
             Refresh = true;
+            ///SelectionFormula = null;
+            ///Culture = null;
+            
+            //SQL Server Config
+            ServerName = Properties.Settings.Default.SQL_Server_Name;
+            DatabaseName = Properties.Settings.Default.SQL_Database_Name;
+            IntegratedSecurity = Properties.Settings.Default.SQL_Use_IntegratedSecurity;
+            UserName = Properties.Settings.Default.SQL_User_Name;
+            Password = Properties.Settings.Default.SQL_Password;
 
             //Email Config
             MailTo = null;
-            MailBcc = "NA";
-            MailCC = "NA";
             EmailOutput = false;
-            MailFrom = "noreply@noreply.com";
-            MailFromName = "Crystal Reports";
-            SmtpServer = null;
-            SmtpPort = 25;
-            SmtpSSL = false;
-            SmtpAuth = false;
-            SmtpUN = null;
-            SmtpPW = null;
-            EmailSubject = "Crystal Reports";
-            EmailBody = "NA";
-            EmailKeepFile = false;
+            MailCC = Properties.Settings.Default.Email_CC;
+            MailBcc = Properties.Settings.Default.Email_BCC;
+            MailFrom = Properties.Settings.Default.Email_From;
+            MailFromName = Properties.Settings.Default.Email_From_Display_Name;
+            SmtpServer = Properties.Settings.Default.SMTP_Server_Address;
+            SmtpPort = Convert.ToInt32(Properties.Settings.Default.SMTP_Server_Port);
+            SmtpSSL = Properties.Settings.Default.SMTP_SSL_Reqruired;
+            SmtpAuth = Properties.Settings.Default.SMTP_Authentication_Used;
+            SmtpUN = Properties.Settings.Default.SMTP_User_Name;
+            SmtpPW = Properties.Settings.Default.SMTP_Password;
+            EmailSubject = Properties.Settings.Default.Email_Subject;
+            EmailBody = Properties.Settings.Default.Email_Message_Body;
+            EmailKeepFile = Properties.Settings.Default.Keep_Outputfile_after_Sending;
 
             //Logging Options
-            EnableLogToConsole = false;
+            EnableLog = false;
             LogFileName = String.Empty;
+            EnableLogToConsole = Properties.Settings.Default.EnableLogToConsole;
 
             // Collection of string to store parameters
             ParameterCollection = new List<string>();
@@ -219,6 +238,8 @@ namespace CrystalReportsNinja
                             UserName = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-P")
                             Password = parameters[i + 1];
+                        else if (parameters[i].Equals("-I"))
+                            IntegratedSecurity = true;
                         else if (parameters[i].ToUpper() == "-F")
                             ReportPath = parameters[i + 1];
                         else if (parameters[i].ToUpper() == "-O")
@@ -279,7 +300,7 @@ namespace CrystalReportsNinja
                     }
                 }
 
-                if (parameters[i] == "-?" || parameters[i] == "/?")
+                if (parameters[i] == "-?" || parameters[i] == "/?" || parameters[i] == "?")
                     GetHelp = true;
 
                 if (parameters[i].ToUpper() == "-L")
